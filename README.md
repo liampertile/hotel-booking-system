@@ -1,6 +1,7 @@
 # hotel-booking-system
 
-Pensamiento Computacional y Programación Avanzada (e)
+## Pensamiento Computacional y Programación Avanzada (e)
 
-Profesor: Ariel Lebouski
-Integrantes: Alejo Chuquel, Santiago Fernandez, Ivan Barragan, Agustín Contrera y Tomás Pertile
+**Profesor**: Ariel Lebouski
+
+**Integrantes**: Alejo Chuquel, Santiago Fernandez, Ivan Barragan, Agustín Contrera y Tomás Pertile
