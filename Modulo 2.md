@@ -1,9 +1,9 @@
-## 4.2 Módulo 2: Registro de reserva
+## Módulo 2: Registro de reserva
 
 ### Objetivo
 Registrar una nueva reserva para una habitación seleccionada por el usuario.  
 Se almacena la información del huésped, el rango de fechas, la cantidad de personas y se genera un número único de reserva.  
-El estado inicial de la reserva es **`pending`**.
+El estado inicial de la reserva es **`pendiente`**.
 
 ---
 
@@ -24,7 +24,7 @@ El estado inicial de la reserva es **`pending`**.
 - La fecha de check-in debe ser anterior a la de check-out.  
 - El rango máximo es de **14 noches**.  
 - La habitación debe existir, estar activa y tener capacidad suficiente.  
-- La habitación no debe tener solapamiento con otra reserva *pending* o *confirmed*.  
+- La habitación no debe tener solapamiento con otra reserva *pendiente* o *confirmada*.  
 - Los datos del huésped deben estar completos y válidos.  
 - Al registrar la reserva, la habitación queda bloqueada para ese rango de fechas (por *X minutos*).
 
@@ -32,7 +32,7 @@ El estado inicial de la reserva es **`pending`**.
 
 ### Salida
 - **reserva_id**: número/código único generado.  
-- **Estado inicial**: `"pending"`  
+- **Estado inicial**: `"pendiente"`  
 - **Monto estimado** = *(tarifa base × noches × cantidad huéspedes + impuestos estimados)*  
 - Se registra el huésped si no existía.  
 - Se asocia la habitación a la reserva.
@@ -44,7 +44,7 @@ El estado inicial de la reserva es **`pending`**.
 2. Verificar disponibilidad actual de la habitación (sin solapamientos).  
 3. Validar existencia de la habitación y su capacidad.  
 4. Crear registro de huésped (si no existe).  
-5. Crear nueva reserva en estado `"pending"`.  
+5. Crear nueva reserva en estado `"pendiente"`.  
 6. Asociar habitación a la reserva.  
 7. Devolver ID de reserva y estado.
 
@@ -62,7 +62,7 @@ El estado inicial de la reserva es **`pending`**.
    2.3 No tiene reservas activas solapadas  
 3. **Registrar huésped si no existe**  
 4. **Crear reserva:**
-   4.1 Guardar checkin_date, checkout_date, estado = `"pending"`  
+   4.1 Guardar checkin_date, checkout_date, estado = `"pendiente"`  
    4.2 Asignar huesped_id y habitacion_id  
 5. **Calcular y mostrar monto estimado**
 
@@ -87,13 +87,13 @@ El estado inicial de la reserva es **`pending`**.
 4. **Registrar reserva**
    - Crear objeto reserva con:
      - ID generado  
-     - Estado = `"pending"`  
+     - Estado = `"pendiente"`  
      - Fechas  
      - Habitación y huésped vinculados  
    - Agregar a la lista de reservas activas  
 
 5. **Salida**
-   - Mostrar: ID de reserva, estado = `"pending"`, monto estimado  
+   - Mostrar: ID de reserva, estado = `"pendiente"`, monto estimado  
    - La habitación queda bloqueada temporalmente  
 
 ---
@@ -141,7 +141,7 @@ reserva ← {
   habitacion_id: habitacion.id, 
   checkin_date: checkin_date, 
   checkout_date: checkout_date, 
-  estado: "pending" 
+  estado: "pendiente" 
 } 
 AGREGAR_A_LISTA_RESERVAS(reserva) 
 // Calcular monto estimado 
