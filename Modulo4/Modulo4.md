@@ -42,26 +42,26 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 ### Refinamiento - Nivel 1
 
 1. Realizar comprobaciones de la habitación.
-   1.1 Comprobar si la habitación asignada ya se encuentra limpia.
-      1.1.1 Verificar si el estado de la habitación es "preparada"
-   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
-      1.2.1 Verificar si existe una nueva reserva válida.
-   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
-      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
+   1.1 Comprobar si la habitación asignada ya se encuentra limpia.<br>
+      1.1.1 Verificar si el estado de la habitación es "preparada"<br>
+   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.<br>
+      1.2.1 Verificar si existe una nueva reserva válida.<br>
+   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.<br>
+      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".<br>
 
-2. Reestablecer el estado de preparación de la habitación.
-   2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
+2. Reestablecer el estado de preparación de la habitación.<br>
+   2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.<br>
 
-3. Asignar tareas de preparación a personal disponible.
-   3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
+3. Asignar tareas de preparación a personal disponible.<br>
+   3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.<br>
 
-4. Gestionar ejecución de tareas
-   4.1 Iniciar tarea.
-   4.2 Finalizar tarea.
-   4.3 Validar tarea.
+4. Gestionar ejecución de tareas<br>
+   4.1 Iniciar tarea.<br>
+   4.2 Finalizar tarea.<br>
+   4.3 Validar tarea.<br>
 
-5. Verificar que todas las tareas estén validadas para preparar la habitación.
-   5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+5. Verificar que todas las tareas estén validadas para preparar la habitación.<br>
+   5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.<br>
 
 ### Refinamiento - Nivel 2
 
