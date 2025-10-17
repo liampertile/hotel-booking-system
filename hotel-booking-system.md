@@ -1,0 +1,214 @@
+# Sistema de Gestión Hotelera
+
+## Índice
+
+1. [Relevamiento, Análisis y Diseño del Sistema](#1-relevamiento-análisis-y-diseño-del-sistema)
+   - [1.1 Relevamiento](#11-relevamiento)
+   - [1.2 Análisis](#12-análisis)
+   - [1.3 Diseño del Sistema](#13-diseño-del-sistema)
+   - [1.4 Objetivo General](#14-objetivo-general)
+2. [DER (Diagrama entidad-relación)](#2-der-diagrama-entidad-relación)
+3. [DFD (Diagrama de flujo de datos)](#3-dfd-diagrama-de-flujo-de-datos)
+   - [3.1 Sistema en general](#31-sistema-en-general)
+   - [3.2 Módulos](#32-módulos)
+     - [3.2.1 Módulo 1](#321-módulo-1)
+     - [3.2.2 Módulo 2](#322-módulo-2)
+     - [3.2.3 Módulo 3](#323-módulo-3)
+     - [3.2.4 Módulo 4](#324-módulo-4)
+     - [3.2.5 Módulo 5](#325-módulo-5)
+     - [3.2.6 Módulo 6](#326-módulo-6)
+   - [3.3 Interpretación global](#33-interpretación-global)
+4. [Desarrollo de módulos](#4-desarrollo-de-módulos)
+
+---
+
+## 1. Relevamiento, Análisis y Diseño del Sistema
+
+### 1.1 Relevamiento
+
+En el contexto de la gestión hotelera moderna, se identificó la necesidad de contar con un sistema informático que optimice los procesos vinculados al ciclo completo de la reserva de habitaciones.  
+El relevamiento permitió detectar los principales puntos críticos en la operación cotidiana del hotel, como la falta de trazabilidad entre reservas, demoras en la confirmación de pagos y ausencia de un control centralizado sobre la preparación y asignación de habitaciones.
+
+De este estudio preliminar surgieron los requerimientos funcionales esenciales:
+
+- Consultar la disponibilidad de habitaciones en función de fechas, tipo y capacidad, sin alterar los datos operativos.  
+- Registrar nuevas reservas asociadas a huéspedes, con validaciones sobre fechas, capacidad y políticas del establecimiento.  
+- Confirmar reservas mediante la validación de pagos o garantías de estadía.  
+- Gestionar la preparación de habitaciones asegurando el cumplimiento de los estándares de limpieza, mantenimiento y confort.  
+- Controlar el proceso de check-in, registrando la ocupación efectiva y habilitando la atención personalizada al huésped.  
+
+Asimismo, se identificó la necesidad de establecer registros históricos que permitan auditar cada operación, garantizando la transparencia y el seguimiento de las acciones realizadas por el personal.
+
+---
+
+### 1.2 Análisis
+
+A partir del relevamiento, se determinaron cinco módulos funcionales que reflejan las etapas clave del ciclo de vida de una reserva hotelera:
+
+- **Consulta de disponibilidad**: permite conocer las habitaciones libres en un rango determinado de fechas, aplicando filtros por tipo y capacidad.  
+- **Registro de reserva**: genera una nueva reserva en estado pendiente, asociando los datos del huésped y el detalle de la solicitud.  
+- **Confirmación de reserva**: actualiza el estado de la reserva a confirmada una vez verificado el pago o garantía correspondiente.  
+- **Preparación de la habitación**: coordina las tareas internas previas al check-in, como limpieza, reposición de insumos y control de mantenimiento.  
+- **Check-in y atención al huésped**: formaliza el ingreso del huésped, valida su identidad y marca la habitación como ocupada dentro del sistema.  
+
+Los módulos se integran de manera secuencial y dependiente, garantizando que la salida de un proceso constituya la entrada del siguiente.  
+Esta estructura minimiza errores operativos y refuerza la coherencia interna del sistema.
+
+Se determinó además la importancia de incorporar reglas de negocio estrictas (validaciones de fechas, capacidades y estados de reserva) para evitar conflictos como sobreasignaciones, reservas duplicadas o habitaciones no preparadas a tiempo.
+
+---
+
+### 1.3 Diseño del Sistema
+
+El sistema fue concebido bajo una arquitectura modular y escalable, en la que cada proceso mantiene independencia lógica, pero se integra dentro de un flujo general coherente.  
+
+Cada módulo se define por los siguientes componentes:
+
+- **Entradas:** datos necesarios para su ejecución (fechas, ID de habitación, datos del huésped, etc.).  
+- **Reglas de validación:** restricciones y condiciones de negocio para asegurar la consistencia de la información.  
+- **Salidas:** resultados del proceso (estado de la reserva, habitación asignada, comprobante, etc.).  
+- **Algoritmo:** secuencia de pasos operativos con distintos niveles de refinamiento.  
+- **Pseudocódigo:** representación formal del flujo lógico que facilita la implementación.  
+
+El diseño busca garantizar:
+
+- Trazabilidad completa entre las distintas etapas de una reserva.  
+- Integridad de los datos relacionados con huéspedes, habitaciones y transacciones.  
+- Secuencialidad y coherencia en la gestión de cada proceso operativo.  
+- Facilidad de mantenimiento y extensión futura, permitiendo agregar funcionalidades (check-out, facturación, reportes, etc.) sin alterar la estructura base.
+
+---
+
+### 1.4 Objetivo General
+
+Desarrollar un sistema integral de gestión hotelera que administre de forma ordenada y eficiente el ciclo completo de una reserva —desde la consulta inicial hasta el check-in—, garantizando la consistencia de los datos, la eficiencia operativa y una experiencia fluida tanto para el huésped como para el personal del hotel.  
+
+El sistema busca modernizar la operatoria interna, reducir errores humanos y establecer una base sólida para futuras mejoras tecnológicas, como la integración con plataformas de reservas en línea o sistemas de gestión contable.
+
+---
+
+## 2. DER (Diagrama entidad-relación)
+
+El Diagrama Entidad–Relación (DER) define la estructura lógica de los datos que componen el sistema de gestión hotelera. Este modelo permite visualizar las entidades principales del sistema, sus atributos y las relaciones existentes entre ellas, asegurando la integridad y consistencia de la información a lo largo de todo el proceso operativo.
+
+El diseño presentado contempla cinco entidades principales:
+
+- **Persona:** almacena los datos personales y de contacto tanto de huéspedes como del personal del hotel. Incluye campos como nombre, DNI, correo electrónico, teléfono y tipo de persona (cliente o staff).  
+- **Reserva:** representa el núcleo del sistema. Registra las operaciones de reserva de habitaciones, vinculando un huésped con una habitación durante un rango de fechas determinado.  
+- **Habitación:** modela las unidades físicas del hotel. Cada registro posee atributos de capacidad, tarifa, estado actual (disponible, ocupada, en preparación) y fecha de habilitación.  
+- **Pago:** almacena la información de los pagos efectuados para confirmar reservas. Incluye monto, moneda, método de pago, estado y fecha de creación.  
+- **Tarea:** representa las actividades operativas relacionadas con la preparación de las habitaciones (limpieza, reposición, mantenimiento).  
+
+Relaciones principales:
+
+- Una Persona puede generar muchas Reservas (1:N).  
+- Una Reserva está asociada a una sola Habitación, pero una habitación puede tener muchas Reservas a lo largo del tiempo (N:1).  
+- Una Reserva puede estar vinculada con uno o más Pagos (1:N).  
+- Una Habitación puede tener muchas Tareas asignadas (1:N).  
+
+El modelo refleja un esquema relacional normalizado que favorece la integridad referencial y evita redundancias.
+
+---
+
+## 3. DFD (Diagrama de flujo de datos)
+
+### 3.1 Sistema en general
+
+El DFD general (nivel 0) presenta una visión integrada de los cinco procesos que conforman el ciclo operativo del sistema hotelero.  
+Cada proceso se encuentra interconectado de forma lógica, evidenciando la dependencia secuencial entre los módulos: desde la consulta inicial hasta el check-in efectivo del huésped.
+
+Principales flujos identificados:
+
+- Interacción con el huésped (consulta → check-in).  
+- Procesos administrativos del personal del hotel y sistema de pagos.  
+- Bases de datos centrales: Habitación, Reserva, Pago, Persona y Tarea.  
+
+---
+
+### 3.2 Módulos
+
+#### 3.2.1 Módulo 1
+
+Representa el punto de partida del proceso de reservas.  
+El huésped ingresa un rango de fechas y la cantidad de huéspedes. El sistema consulta las bases de datos y devuelve habitaciones disponibles.
+
+- **Entradas:** fechas, cantidad de huéspedes.  
+- **Salidas:** listado filtrado de habitaciones disponibles.  
+- **Almacenamientos:** Habitación, Reserva.  
+
+---
+
+#### 3.2.2 Módulo 2
+
+Crea una reserva preliminar (estado `pending`).  
+El huésped ingresa sus datos y selecciona una habitación disponible. Se verifica solapamiento, se registra el huésped si no existe y se crea la reserva temporal.
+
+- **Entradas:** datos del huésped, habitación seleccionada.  
+- **Salidas:** confirmación provisional, número de reserva.  
+- **Almacenamientos:** Persona, Habitación, Reserva.  
+
+---
+
+#### 3.2.3 Módulo 3
+
+Formaliza la reserva mediante la validación del pago.  
+Si el pago se aprueba, se actualiza la reserva a `confirmed` y la habitación a reservada.
+
+- **Entradas:** datos de pago, reserva pendiente.  
+- **Salidas:** comprobante de confirmación, actualización de estado.  
+- **Almacenamientos:** Pago, Reserva, Habitación.  
+
+---
+
+#### 3.2.4 Módulo 4
+
+Gestiona el flujo interno de preparación de habitaciones.  
+Tras la confirmación de reserva, se generan tareas (limpieza, mantenimiento, reposición) a completar antes del check-in.
+
+- **Entradas:** confirmación de reserva, personal disponible.  
+- **Salidas:** habitación marcada como preparada.  
+- **Almacenamientos:** Tarea, Habitación, Reserva.  
+
+---
+
+#### 3.2.5 Módulo 5
+
+Etapa final del ciclo operativo (check-in).  
+El huésped se presenta con su documento y número de reserva; el sistema valida y actualiza estados a `ocupada` y `checked_in`.
+
+- **Entradas:** reserva confirmada, identificación del huésped.  
+- **Salidas:** notificación de check-in exitoso, habitación ocupada.  
+- **Almacenamientos:** Reserva, Habitación.  
+
+---
+
+#### 3.2.6 Módulo 6
+
+Proceso de **check-out**, ejecutado al finalizar la estadía.  
+Libera la habitación, finaliza la reserva y prepara la unidad para un nuevo ingreso.
+
+- **Entradas:** habitacion_id, reserva_id, orden del staff.  
+- **Procesos:**
+  - Liberar habitación (estado: libre).  
+  - Finalizar reserva (estado: finalizada).  
+  - Preparar habitación (invoca módulo 4).  
+- **Salidas:** habitación libre, reserva finalizada, confirmación al staff.  
+- **Almacenamientos:** Habitación, Reserva, Tarea.  
+
+---
+
+### 3.3 Interpretación global
+
+Los DFD demuestran cómo el sistema opera de forma modular, segura y controlada.  
+Cada flujo garantiza una transformación válida de datos: entrada → procesamiento → salida.  
+
+Además, la descomposición progresiva permite:
+
+- Identificar puntos críticos (pagos, validaciones).  
+- Mantener una visión jerárquica del flujo de información.  
+- Alinear el modelo funcional (DFD) con el modelo de datos (DER).
+
+---
+
+## 4. Desarrollo de módulos
+*(contenido a continuar aquí)*
