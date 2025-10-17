@@ -33,68 +33,72 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 
 ### Algoritmo
 
+```text
 1. Realizar comprobaciones de la habitación.
 2. Reestablecer estado de preparación de la habitación.
 3. Asignar tareas de preparación a personal disponible.
 4. Gestionar ejecución de tareas.
 5. Verificar que todas las tareas estén validadas para preparar la habitación.
+```
 
 ### Refinamiento - Nivel 1
 
+```text
 1. Realizar comprobaciones de la habitación.
-   1.1 Comprobar si la habitación asignada ya se encuentra limpia.<br>
-      1.1.1 Verificar si el estado de la habitación es "preparada"<br>
-   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.<br>
-      1.2.1 Verificar si existe una nueva reserva válida.<br>
-   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.<br>
-      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".<br>
+   1.1 Comprobar si la habitación asignada ya se encuentra limpia.
+      1.1.1 Verificar si el estado de la habitación es "preparada"
+   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
+      1.2.1 Verificar si existe una nueva reserva válida.
+   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
+      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
 
-2. Reestablecer el estado de preparación de la habitación.<br>
-   2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.<br>
+2. Reestablecer el estado de preparación de la habitación.
+   2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
 
-3. Asignar tareas de preparación a personal disponible.<br>
-   3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.<br>
+3. Asignar tareas de preparación a personal disponible.
+   3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
 
-4. Gestionar ejecución de tareas<br>
-   4.1 Iniciar tarea.<br>
-   4.2 Finalizar tarea.<br>
-   4.3 Validar tarea.<br>
+4. Gestionar ejecución de tareas
+   4.1 Iniciar tarea.
+   4.2 Finalizar tarea.
+   4.3 Validar tarea.
 
-5. Verificar que todas las tareas estén validadas para preparar la habitación.<br>
-   5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.<br>
-
+5. Verificar que todas las tareas estén validadas para preparar la habitación.
+   5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+```
 ### Refinamiento - Nivel 2
 
-1. Realizar comprobaciones de la habitación.<br>
-   1.1 Comprobar si la habitación asignada ya se encuentra limpia.<br>
-      1.1.1 Verificar si el estado de la habitación es "preparada"<br>
-         1.1.1.1 Obtener la habitación<br>
-         1.1.1.2 Si el estado es "preparada" entonces<br>
-            1.1.1.2.1 Mostrar "No se preparará la habitación porque ya se encuentra en este estado".<br>
-         1.1.1.3 Sino<br>
-            1.1.1.3.1 Mostrar "La habitación no se encuentra preparada".<br>
-   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.<br>
-         1.2.1 Verificar si existe una nueva reserva válida.<br>
-            1.2.1.1 Obtener la reserva<br>
-            1.2.1.2 Si la fecha_check_in asociada a la reserva es mayor a la fecha_actual y las condiciones de reserva son válidas<br>
-               1.2.1.2.1 Mostrar "La habitación tiene una próxima reserva".<br>
-            1.2.1.3 Sino<br>
-               1.2.1.3.1 Mostrar "La habitación no tiene una próxima reserva".<br>
-   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.<br>
-      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".<br>
-         1.3.1.1 Obtener la habitación.<br>
-         1.3.1.2 Si el estado de la habitación asociada a la reserva es "ocupada"<br>
-            1.3.1.2.1 Mostrar "La habitación se encuentra ocupada, no se procede a preparar".<br>
-         1.3.1.3 Sino<br>
-            1.3.1.3.1 Mostrar "La habitación se encuentra desocupada, se procede a preparar".<br>
+```text
+1. Realizar comprobaciones de la habitación.
+   1.1 Comprobar si la habitación asignada ya se encuentra limpia.
+      1.1.1 Verificar si el estado de la habitación es "preparada"
+         1.1.1.1 Obtener la habitación
+         1.1.1.2 Si el estado es "preparada" entonces
+            1.1.1.2.1 Mostrar "No se preparará la habitación porque ya se encuentra en este estado".
+         1.1.1.3 Sino
+            1.1.1.3.1 Mostrar "La habitación no se encuentra preparada".
+   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
+         1.2.1 Verificar si existe una nueva reserva válida.
+            1.2.1.1 Obtener la reserva
+            1.2.1.2 Si la fecha_check_in asociada a la reserva es mayor a la fecha_actual y las condiciones de reserva son válidas
+               1.2.1.2.1 Mostrar "La habitación tiene una próxima reserva".
+            1.2.1.3 Sino
+               1.2.1.3.1 Mostrar "La habitación no tiene una próxima reserva".
+   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
+      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
+         1.3.1.1 Obtener la habitación.
+         1.3.1.2 Si el estado de la habitación asociada a la reserva es "ocupada"
+            1.3.1.2.1 Mostrar "La habitación se encuentra ocupada, no se procede a preparar".
+         1.3.1.3 Sino
+            1.3.1.3.1 Mostrar "La habitación se encuentra desocupada, se procede a preparar".
 
-2. Reestablecer el estado de preparación de la habitación.<br>
-	2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.<br>
-		2.1.1 Obtener la lista de tareas asociada a la habitación.<br>
-		2.1.2 Para cada tarea de la lista de tareas asociada a la habitación.<br>
-			2.1.2.1. Establecer estado en pendiente.<br>
-			2.1.2.2. Establecer validación en FALSO.<br>
-		2.1.3 Cambiar estado de la habitación a "libre".<br>
+2. Reestablecer el estado de preparación de la habitación.
+	2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
+		2.1.1 Obtener la lista de tareas asociada a la habitación.
+		2.1.2 Para cada tarea de la lista de tareas asociada a la habitación.
+			2.1.2.1. Establecer estado en pendiente. 
+			2.1.2.2. Establecer validación en FALSO.
+		2.1.3 Cambiar estado de la habitación a "libre".
 
 3. Asignar tareas de preparación a personal disponible.
 	3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
@@ -129,7 +133,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 			5.1.3.1 Ejecutar EstablecerHabitacionPreparada(habitaciónId)
 		5.1.4 Sino
 			5.1.4.1 Regresar al menú de validación de actividades.
-
+```
 ### Pseudocódigo
 
 ```pseudo
