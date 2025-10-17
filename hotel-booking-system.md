@@ -114,6 +114,8 @@ El modelo refleja un esquema relacional normalizado que favorece la integridad r
 
 ### 3.1 Sistema en general
 
+![DER MOD1](./DFD%20COMPLETO.png)
+
 El DFD general (nivel 0) presenta una visión integrada de los cinco procesos que conforman el ciclo operativo del sistema hotelero.  
 Cada proceso se encuentra interconectado de forma lógica, evidenciando la dependencia secuencial entre los módulos: desde la consulta inicial hasta el check-in efectivo del huésped.
 
@@ -138,7 +140,8 @@ El huésped ingresa un rango de fechas y la cantidad de huéspedes. El sistema c
   
 El proceso no genera modificaciones ni bloqueos de datos, respetando el principio de no mutación del sistema en la etapa de consulta.
 
-![DER MOD1](./DFD MODULO 1.png)
+![DER MOD1](./DFD%20MODULO%201.png)
+
 
 ---
 
@@ -151,6 +154,7 @@ El huésped ingresa sus datos y selecciona una habitación disponible. Se verifi
 - **Salidas:** confirmación provisional, número de reserva.  
 - **Almacenamientos:** Persona, Habitación, Reserva.  
 
+![DER MOD1](./DFD%20MODULO%202.png)
 ---
 
 #### 3.2.3 Módulo 3
@@ -162,6 +166,7 @@ Si el pago se aprueba, se actualiza la reserva a `confirmed` y la habitación a 
 - **Salidas:** comprobante de confirmación, actualización de estado.  
 - **Almacenamientos:** Pago, Reserva, Habitación.  
 
+![DER MOD1](./DFD%20MODULO%203.png)
 ---
 
 #### 3.2.4 Módulo 4
@@ -173,6 +178,7 @@ Tras la confirmación de reserva, se generan tareas (limpieza, mantenimiento, re
 - **Salidas:** habitación marcada como preparada.  
 - **Almacenamientos:** Tarea, Habitación, Reserva.  
 
+![DER MOD1](./DFD%20MODULO%204.png)
 ---
 
 #### 3.2.5 Módulo 5
@@ -184,6 +190,7 @@ El huésped se presenta con su documento y número de reserva; el sistema valida
 - **Salidas:** notificación de check-in exitoso, habitación ocupada.  
 - **Almacenamientos:** Reserva, Habitación.  
 
+![DER MOD1](./DFD%20MODULO%205.png)
 ---
 
 #### 3.2.6 Módulo 6
@@ -199,6 +206,7 @@ Libera la habitación, finaliza la reserva y prepara la unidad para un nuevo ing
 - **Salidas:** habitación libre, reserva finalizada, confirmación al staff.  
 - **Almacenamientos:** Habitación, Reserva, Tarea.  
 
+![DER MOD1](./DFD%20MODULO%206.png)
 ---
 
 ### 3.3 Interpretación global
