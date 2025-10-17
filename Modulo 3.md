@@ -14,7 +14,7 @@ El proceso asegura que la reserva esté activa, que el importe sea correcto, que
 - **monto (número):** Importe abonado por el cliente.  
 - **moneda (string):** Tipo de moneda utilizada (por ejemplo, `ARS`).  
 - **metodo_pago (string):** Medio de pago empleado (tarjeta, efectivo, transferencia, etc.).  
-- **estado (string):** Estado del pago (`autorizado`, `capturado`, `reintegrado`, `anulado`).  
+- **estado (string):** Estado del pago (`autorizado`, `capturado`, `anulado`).  
 - **staff_id (número):** Identificador del empleado (tipo *staff*) responsable de la confirmación.
 
 ---
@@ -24,7 +24,7 @@ El proceso asegura que la reserva esté activa, que el importe sea correcto, que
 1. La reserva debe existir y encontrarse en estado `pendiente`.  
 2. Solo pueden confirmarse reservas que no estén canceladas ni completadas.  
 3. El monto del pago debe ser mayor que cero.  
-4. El estado del pago debe ser uno de los válidos: `autorizado`, `capturado`, `reintegrado`, o `anulado`.  
+4. El estado del pago debe ser uno de los válidos: `autorizado`, `capturado`, o `anulado`.  
 5. Todo pago registrado debe incluir método, monto, moneda, estado y fecha de creación.  
 6. Si el pago fue capturado, la reserva cambia automáticamente a estado `confirmada`.  
 7. Si el pago no fue capturado, la reserva permanece `pendiente`.
@@ -62,7 +62,7 @@ El proceso asegura que la reserva esté activa, que el importe sea correcto, que
 2. **Registrar el pago:**
    - Crear un nuevo pago asociado a la reserva.  
    - Registrar método, moneda, monto, estado y fecha de creación.  
-   - Aceptar únicamente estados válidos: `autorizado`, `capturado`, `reintegrado`, `anulado`.
+   - Aceptar únicamente estados válidos: `autorizado`, `capturado`, `anulado`.
 
 3. **Confirmar la reserva (si corresponde):**
    - Si el pago fue `capturado`, actualizar estado de reserva a `confirmada`.  
@@ -128,3 +128,4 @@ SINO
 FIN SI
 
 FIN
+
