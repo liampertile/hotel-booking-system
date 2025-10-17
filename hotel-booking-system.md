@@ -123,7 +123,9 @@ Principales flujos identificados:
 
 - Interacción con el huésped (consulta → check-in).  
 - Procesos administrativos del personal del hotel y sistema de pagos.  
-- Bases de datos centrales: Habitación, Reserva, Pago, Persona y Tarea.  
+- Bases de datos centrales: Habitación, Reserva, Pago, Persona y Tarea.
+
+Este nivel permite comprender el funcionamiento global del sistema como un ecosistema integrado, donde cada módulo realiza una función específica y contribuye a mantener la coherencia del flujo operativo.
 
 ---
 
@@ -152,9 +154,12 @@ El huésped ingresa sus datos y selecciona una habitación disponible. Se verifi
 
 - **Entradas:** datos del huésped, habitación seleccionada.  
 - **Salidas:** confirmación provisional, número de reserva.  
-- **Almacenamientos:** Persona, Habitación, Reserva.  
+- **Almacenamientos:** Persona, Habitación, Reserva.  }
+
+Este módulo inicia la persistencia de datos, ya que introduce registros nuevos que serán validados en los siguientes procesos.
 
 ![DER MOD1](./DFD%20MODULO%202.png)
+
 ---
 
 #### 3.2.3 Módulo 3
@@ -164,9 +169,12 @@ Si el pago se aprueba, se actualiza la reserva a `confirmed` y la habitación a 
 
 - **Entradas:** datos de pago, reserva pendiente.  
 - **Salidas:** comprobante de confirmación, actualización de estado.  
-- **Almacenamientos:** Pago, Reserva, Habitación.  
+- **Almacenamientos:** Pago, Reserva, Habitación.
+
+Este módulo es clave porque consolida la coherencia financiera y operativa del proceso, garantizando que solo reservas con pago válido avancen al siguiente paso.
 
 ![DER MOD1](./DFD%20MODULO%203.png)
+
 ---
 
 #### 3.2.4 Módulo 4
@@ -176,9 +184,12 @@ Tras la confirmación de reserva, se generan tareas (limpieza, mantenimiento, re
 
 - **Entradas:** confirmación de reserva, personal disponible.  
 - **Salidas:** habitación marcada como preparada.  
-- **Almacenamientos:** Tarea, Habitación, Reserva.  
+- **Almacenamientos:** Tarea, Habitación, Reserva.
+
+El proceso promueve la gestión de calidad interna, permitiendo al hotel mantener un registro digital del estado de las tareas y el cumplimiento de los plazos operativos.
 
 ![DER MOD1](./DFD%20MODULO%204.png)
+
 ---
 
 #### 3.2.5 Módulo 5
@@ -188,24 +199,45 @@ El huésped se presenta con su documento y número de reserva; el sistema valida
 
 - **Entradas:** reserva confirmada, identificación del huésped.  
 - **Salidas:** notificación de check-in exitoso, habitación ocupada.  
-- **Almacenamientos:** Reserva, Habitación.  
+- **Almacenamientos:** Reserva, Habitación.
+
+Este proceso cierra el flujo de la reserva garantizando consistencia entre la información administrativa y la ocupación real.
 
 ![DER MOD1](./DFD%20MODULO%205.png)
+
 ---
 
 #### 3.2.6 Módulo 6
 
-Proceso de **check-out**, ejecutado al finalizar la estadía.  
-Libera la habitación, finaliza la reserva y prepara la unidad para un nuevo ingreso.
+El diagrama de flujo de datos del Módulo 6 – Check-out representa la etapa final del ciclo operativo del sistema.
+El proceso se ejecuta una vez que el huésped ha completado su estadía.
+El personal del hotel activa el procedimiento de check-out, que tiene como propósito liberar la habitación, finalizar la reserva y preparar la unidad para el próximo ingreso.
 
-- **Entradas:** habitacion_id, reserva_id, orden del staff.  
+- **Entradas:**
+   - Identificador de habitación (habitacion_id)
+   - Identificador de reserva (reserva_id)
+   - Orden del staff para ejecutar el check-out
+
 - **Procesos:**
-  - Liberar habitación (estado: libre).  
-  - Finalizar reserva (estado: finalizada).  
-  - Preparar habitación (invoca módulo 4).  
-- **Salidas:** habitación libre, reserva finalizada, confirmación al staff.  
-- **Almacenamientos:** Habitación, Reserva, Tarea.  
+  - Liberar habitación:cambia el estado de la habitación de ocupada a libre.  
+  - Finalizar reserva: actualiza el estado de la reserva a finalizada.  
+  - Preparar habitación: invoca el módulo de Preparación de Habitación para reestablecer el estado y las tareas asociadas.
+     
+- **Salidas:**
+   - Habitación en estado libre y disponible para una nueva reserva.
+   - Reserva actualizada como finalizada.
+   - Confirmación de check-out enviada al staff.
 
+- **Almacenamientos:**
+   - Habitación: refleja el cambio de estado a libre.
+   - Reserva: guarda el estado finalizada.
+   - Tarea: se activa el proceso de Preparación de Habitación.
+ 
+Descripción general:
+Este módulo completa el ciclo operativo del sistema hotelero.
+A partir de la acción del personal, se sincronizan los estados administrativos y físicos: la habitación se libera, la reserva se cierra y el proceso de limpieza y acondicionamiento vuelve a dejar la unidad lista para una nueva ocupación.
+De esta manera, se garantiza la continuidad del flujo y la coherencia entre la información almacenada y el estado real de las instalaciones.
+  
 ![DER MOD1](./DFD%20MODULO%206.png)
 ---
 
@@ -221,6 +253,7 @@ Además, la descomposición progresiva permite:
 - Alinear el modelo funcional (DFD) con el modelo de datos (DER).
 
 ---
+## 4. Diagrama de estados
 
-## 4. Desarrollo de módulos
+## 5. Desarrollo de módulos
 *(contenido a continuar aquí)*
