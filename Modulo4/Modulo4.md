@@ -241,7 +241,7 @@ FIN PROCESO
 
 PROCESO IniciarTarea(habitacionId)
    tarea <- seleccionarTarea(habitacionId, "pending")
-   SI tarea /= NULL ENTONCES
+   SI tarea ≠ NULL ENTONCES
       tarea.estado ← "inProgress"
       tarea.fecha_inicio ← fecha_actual
       imprimir("Tarea " + tarea.id + " iniciada.")
@@ -263,7 +263,7 @@ FIN PROCESO
 
 PROCESO ValidarTarea(habitacionId)
    tarea <- seleccionarTarea(habitacionId, "finished")
-   SI tarea /= NULL ENTONCES
+   SI tarea ≠ NULL ENTONCES
       tarea.fecha_validacion <- fecha_actual
 	   tarea.validada <- leer(validacion)
       imprimir("Tarea " + tarea.id + " validada correctamente.")
