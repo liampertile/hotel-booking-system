@@ -134,7 +134,11 @@ El huésped ingresa un rango de fechas y la cantidad de huéspedes. El sistema c
 
 - **Entradas:** fechas, cantidad de huéspedes.  
 - **Salidas:** listado filtrado de habitaciones disponibles.  
-- **Almacenamientos:** Habitación, Reserva.  
+- **Almacenamientos:** Habitación, Reserva.
+  
+El proceso no genera modificaciones ni bloqueos de datos, respetando el principio de no mutación del sistema en la etapa de consulta.
+
+![DER MOD1](./DFD MODULO 1.png)
 
 ---
 
