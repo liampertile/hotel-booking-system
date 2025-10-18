@@ -152,7 +152,7 @@ El proceso no genera modificaciones ni bloqueos de datos, respetando el principi
 
 #### 3.2.2 Módulo 2
 
-Crea una reserva preliminar (estado `pending`).  
+Crea una reserva preliminar (estado `pendiente`).  
 El huésped ingresa sus datos y selecciona una habitación disponible. Se verifica solapamiento, se registra el huésped si no existe y se crea la reserva temporal.
 
 - **Entradas:** datos del huésped, habitación seleccionada.  
@@ -168,7 +168,7 @@ Este módulo inicia la persistencia de datos, ya que introduce registros nuevos 
 #### 3.2.3 Módulo 3
 
 Formaliza la reserva mediante la validación del pago.  
-Si el pago se aprueba, se actualiza la reserva a `confirmed` y la habitación a reservada.
+Si el pago se aprueba, se actualiza la reserva a `confirmada` y la habitación a reservada.
 
 - **Entradas:** datos de pago, reserva pendiente.  
 - **Salidas:** comprobante de confirmación, actualización de estado.  
