@@ -18,7 +18,8 @@
      - [3.2.5 Módulo 5](#325-módulo-5)
      - [3.2.6 Módulo 6](#326-módulo-6)
    - [3.3 Interpretación global](#33-interpretación-global)
-4. [Desarrollo de módulos](#4-desarrollo-de-módulos)
+4. [Diagrama de estados](#5-diagrama-de-estados)
+5. [Desarrollo de módulos](#5-desarrollo-de-módulos)
 
 ---
 
