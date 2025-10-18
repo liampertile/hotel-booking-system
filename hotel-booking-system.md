@@ -276,9 +276,9 @@ El modelo muestra un flujo continuo y cerrado de operaciones que garantiza la co
 - **Inicio del ciclo:** el huésped consulta la disponibilidad (`Consulta_Disponibilidad`) y selecciona una habitación.  
   Este estado inicial no altera datos, solo filtra opciones según capacidad y fechas.
 
-- **Creación de reserva:** tras la selección, el sistema genera una **reserva en estado `pending`** (`Registro_Reserva`), asegurando el bloqueo temporal de la habitación mientras se espera la confirmación del pago.
+- **Creación de reserva:** tras la selección, el sistema genera una **reserva en estado `pendiente`** (`Registro_Reserva`), asegurando el bloqueo temporal de la habitación mientras se espera la confirmación del pago.
 
-- **Confirmación de reserva:** una vez capturado o autorizado el pago (`Confirmacion_Reserva`), la reserva pasa a estado **`confirmed`**, habilitando la fase operativa de preparación.
+- **Confirmación de reserva:** una vez capturado o autorizado el pago (`Confirmacion_Reserva`), la reserva pasa a estado **`confirmada`**, habilitando la fase operativa de preparación.
 
 - **Preparación de habitación:** el módulo interno (`Preparacion_Habitacion`) gestiona tareas como limpieza, mantenimiento o reposición.  
   Este subproceso controla los estados **`En_Preparacion`** y **`Preparada`**, evitando que se asigne una habitación sin validar.
@@ -826,7 +826,7 @@ PROCESO EstablecerHabitaciónPreparada(habitacionId)
 FIN PROCESO
 
 PROCESO IniciarTarea(habitacionId)
-   tarea <- seleccionarTarea(habitacionId, "pending")
+   tarea <- seleccionarTarea(habitacionId, "pendiente")
    SI tarea ≠ NULL ENTONCES
       tarea.estado ← "inProgress"
       tarea.fecha_inicio ← fecha_actual
