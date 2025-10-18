@@ -258,6 +258,44 @@ Además, la descomposición progresiva permite:
 
 ---
 ## 4. Diagrama de estados
+El siguiente diagrama de estados resume el ciclo de vida completo de una reserva dentro del sistema de gestión hotelera.  
+Integra las transiciones entre los distintos módulos operativos —desde la consulta de disponibilidad hasta el check-out— reflejando cómo los estados de **habitaciones** y **reservas** evolucionan de forma sincronizada.
+
+<p align="center">
+  <img src="./diagrama_estado.png" alt="Diagrama de estados del sistema" width="900">
+</p>
+
+### Interpretación
+
+El modelo muestra un flujo continuo y cerrado de operaciones que garantiza la coherencia entre los procesos administrativos y operativos del hotel:
+
+- **Inicio del ciclo:** el huésped consulta la disponibilidad (`Consulta_Disponibilidad`) y selecciona una habitación.  
+  Este estado inicial no altera datos, solo filtra opciones según capacidad y fechas.
+
+- **Creación de reserva:** tras la selección, el sistema genera una **reserva en estado `pending`** (`Registro_Reserva`), asegurando el bloqueo temporal de la habitación mientras se espera la confirmación del pago.
+
+- **Confirmación de reserva:** una vez capturado o autorizado el pago (`Confirmacion_Reserva`), la reserva pasa a estado **`confirmed`**, habilitando la fase operativa de preparación.
+
+- **Preparación de habitación:** el módulo interno (`Preparacion_Habitacion`) gestiona tareas como limpieza, mantenimiento o reposición.  
+  Este subproceso controla los estados **`En_Preparacion`** y **`Preparada`**, evitando que se asigne una habitación sin validar.
+
+- **Check-in:** cuando la habitación está lista, el huésped realiza el ingreso y la reserva cambia a **`checked_in`**.  
+  Este paso consolida la ocupación efectiva y marca el inicio de la estadía.
+
+- **Check-out:** al finalizar la estadía, el staff ejecuta el cierre del ciclo.  
+  La habitación se libera, la reserva pasa a **`finalizada`**, y se re-invoca el proceso de preparación, garantizando la continuidad del flujo operativo.
+
+### Observaciones
+
+Este modelo permite visualizar:
+
+- La **dependencia jerárquica** entre los módulos del sistema (cada estado habilita el siguiente).  
+- El **control transaccional** de cada etapa, asegurando que ninguna habitación avance a un estado inconsistente.  
+- La **reutilización de subprocesos** (como la preparación de habitación) en distintos contextos del ciclo.  
+- Una arquitectura **determinística y trazable**, ideal para implementar mediante máquinas de estados o controladores por eventos.
+
+En conjunto, el diagrama valida que el sistema mantiene **integridad operacional** en todo momento, alineando las acciones del huésped, el staff y la base de datos dentro de un mismo flujo lógico.
+
 
 ## 5. Desarrollo de módulos
 *(contenido a continuar aquí)*
