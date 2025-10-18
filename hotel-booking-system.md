@@ -23,6 +23,7 @@
    - [Módulo 2](#Módulo-2-registro-de-reserva)
    - [Módulo 3](#Módulo-3-confirmación-de-reserva)
    - [Módulo 4](#Módulo-4-preparación-de-la-habitación)
+   - [Módulo 6](#Módulo-6-Checkout-y-liberación-de-la-habitación)
     
 ---
 
