@@ -142,7 +142,7 @@ El huésped ingresa un rango de fechas y la cantidad de huéspedes. El sistema c
   
 El proceso no genera modificaciones ni bloqueos de datos, respetando el principio de no mutación del sistema en la etapa de consulta.
 
-![DER MOD1](./DFD%20MODULO%201.png)
+![DER MOD1](./Modulo1/DFD%20MODULO%201.png)
 
 
 ---
@@ -158,7 +158,7 @@ El huésped ingresa sus datos y selecciona una habitación disponible. Se verifi
 
 Este módulo inicia la persistencia de datos, ya que introduce registros nuevos que serán validados en los siguientes procesos.
 
-![DER MOD1](./DFD%20MODULO%202.png)
+![DER MOD1](./Modulo2/DFD%20MODULO%202.png)
 
 ---
 
@@ -173,7 +173,7 @@ Si el pago se aprueba, se actualiza la reserva a `confirmed` y la habitación a 
 
 Este módulo es clave porque consolida la coherencia financiera y operativa del proceso, garantizando que solo reservas con pago válido avancen al siguiente paso.
 
-![DER MOD1](./DFD%20MODULO%203.png)
+![DER MOD1](./Modulo3/DFD%20MODULO%203.png)
 
 ---
 
@@ -188,7 +188,7 @@ Tras la confirmación de reserva, se generan tareas (limpieza, mantenimiento, re
 
 El proceso promueve la gestión de calidad interna, permitiendo al hotel mantener un registro digital del estado de las tareas y el cumplimiento de los plazos operativos.
 
-![DER MOD1](./DFD%20MODULO%204.png)
+![DER MOD1](./Modulo4/DFD%20MODULO%204.png)
 
 ---
 
@@ -203,7 +203,7 @@ El huésped se presenta con su documento y número de reserva; el sistema valida
 
 Este proceso cierra el flujo de la reserva garantizando consistencia entre la información administrativa y la ocupación real.
 
-![DER MOD1](./DFD%20MODULO%205.png)
+![DER MOD1](./Modulo5/DFD%20MODULO%205.png)
 
 ---
 
@@ -238,7 +238,8 @@ Este módulo completa el ciclo operativo del sistema hotelero.
 A partir de la acción del personal, se sincronizan los estados administrativos y físicos: la habitación se libera, la reserva se cierra y el proceso de limpieza y acondicionamiento vuelve a dejar la unidad lista para una nueva ocupación.
 De esta manera, se garantiza la continuidad del flujo y la coherencia entre la información almacenada y el estado real de las instalaciones.
   
-![DER MOD1](./DFD%20MODULO%206.png)
+![DER MOD1](./Modulo6/DFD%20MODULO%206.png)
+
 ---
 
 ### 3.3 Interpretación global
