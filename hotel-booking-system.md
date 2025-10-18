@@ -20,7 +20,7 @@
    - [3.3 Interpretación global](#33-interpretación-global)
 4. [Diagrama de estados](#4-diagrama-de-estados)
 5. [Desarrollo de módulos](#5-desarrollo-de-módulos)
-
+   - [Módulo 2](#Módulo-2:-Registro-de-reserva)
 ---
 
 ## 1. Relevamiento, Análisis y Diseño del Sistema
@@ -449,3 +449,5 @@ AGREGAR_A_LISTA_RESERVAS(reserva)
 monto ← CALCULAR_MONTO(habitacion.tarifa, checkin_date, checkout_date, 
 cantidad_huespedes) 
 // Salida
+```
+
