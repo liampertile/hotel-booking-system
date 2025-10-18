@@ -91,6 +91,8 @@ El sistema busca modernizar la operatoria interna, reducir errores humanos y est
 
 El Diagrama Entidad–Relación (DER) define la estructura lógica de los datos que componen el sistema de gestión hotelera. Este modelo permite visualizar las entidades principales del sistema, sus atributos y las relaciones existentes entre ellas, asegurando la integridad y consistencia de la información a lo largo de todo el proceso operativo.
 
+![DER MOD1](./DER%20actualizado.png)
+
 El diseño presentado contempla cinco entidades principales:
 
 - **Persona:** almacena los datos personales y de contacto tanto de huéspedes como del personal del hotel. Incluye campos como nombre, DNI, correo electrónico, teléfono y tipo de persona (cliente o staff).  
