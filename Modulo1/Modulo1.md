@@ -28,8 +28,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
 1. Usuario ingresa capacidad, fecha_check_in y fecha_check_out. 
 2. Validar entradas: fechas, límites de noches (≤ 14) y capacidad (≥ 1 𝑦 ≤ 4). 
 3. Cargar universo de habitaciones activas. 
-4. Filtrar habitaciones disponibles y sin solapes, cuya capacidad sea mayor o igual a la 
-solicitada por el usuario. 
+4. Filtrar habitaciones disponibles y sin solapes, cuya capacidad sea mayor o igual a la solicitada por el usuario. 
 5. Construir la lista de disponibles con las habitaciones sin solapes.
 6. Devolver la lista de habitaciones disponibles (sin mutaciones).
 ```
