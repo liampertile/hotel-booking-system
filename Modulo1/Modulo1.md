@@ -46,7 +46,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
 4. Filtrar habitaciones disponibles y sin solapes, cuya capacidad sea mayor o igual a la solicitada por el usuario. 
     4.1 Para cada habitación: 
         4.1.1 Comprobar que la capacidad de la habitación sea mayor o igual que la  capacidad ingresada por el usuario. 
-        4.1.2 Buscar reservas activas (𝑐𝑜𝑛𝑓𝑖𝑟𝑚𝑒𝑑 𝑜 𝑝𝑒𝑛𝑑𝑖𝑛𝑔) que se solapen con el rango solicitado.
+        4.1.2 Buscar reservas activas (confirmado 𝑜 pendiente) que se solapen con el rango solicitado.
         4.1.3 Si no hay solapamiento, añadir la habitación a la lista de habitaciones disponibles. 
 5. Construir la lista de disponibles con las habitaciones sin solapes. 
 6. Devolver la lista de habitaciones disponibles (sin mutaciones).
@@ -69,8 +69,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
         2.2.3 En caso contrario, arrojar error (“El máximo de noches es 14”). 
     2.3 Validar que la capacidad sea mayor o igual a 1. 
         2.3.1 Si la capacidad es mayor o igual a 1, continuar.  
-        2.3.2 En caso contrario, arrojar error (“El mínimo de capacidad es de 1 
-        persona”). 
+        2.3.2 En caso contrario, arrojar error (“El mínimo de capacidad es de 1 persona”). 
     2.4 Validar que la capacidad sea menor o igual a 4. 
         2.4.1 Si la capacidad es menor o igual a 4, continuar.  
         2.4.2 En caso contrario, arrojar error (“El máximo de capacidad es de 4 personas”). 
