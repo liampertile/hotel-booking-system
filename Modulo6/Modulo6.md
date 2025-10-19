@@ -1,4 +1,4 @@
-# MÓDULO CHECK-OUT
+## MÓDULO CHECK-OUT
 
 ## Objetivo
 Gestionar la salida del huésped y liberar la habitación para su posterior limpieza y preparación.  
