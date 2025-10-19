@@ -9,8 +9,8 @@ El estado inicial de la reserva es **`pendiente`**.
 
 ### Entradas
 - **habitacion_id** *(número)*: ID de la habitación seleccionada.  
-- **checkin_date** *(Date)*: Fecha de entrada (inclusive).  
-- **checkout_date** *(Date)*: Fecha de salida (exclusiva).  
+- **fecha_check_in** *(Date)*: Fecha de entrada (inclusive).  
+- **fecha_check_out** *(Date)*: Fecha de salida (exclusiva).  
 - **cantidad_huespedes** *(entero)*: Número de personas a alojar.  
 - **huesped** *(objeto)*:
   - nombre *(string)*
@@ -52,17 +52,17 @@ El estado inicial de la reserva es **`pendiente`**.
 
 ### Refinamiento - Nivel 1
 1. **Validar entradas:**
-   1.1 Check-in < Check-out  
+   1.1 fecha_check_in < fecha_check_out 
    1.2 Diferencia de días ≤ 14  
    1.3 Cantidad de huéspedes ≥ 1  
    1.4 Datos del huésped no vacíos  
 2. **Verificar habitación:**
    2.1 Existe  
-   2.2 Capacidad ≥ cantidad de huéspedes  
+   2.2 capacidad ≥ cantidad de huéspedes  
    2.3 No tiene reservas activas solapadas  
 3. **Registrar huésped si no existe**  
 4. **Crear reserva:**
-   4.1 Guardar checkin_date, checkout_date, estado = `"pendiente"`  
+   4.1 Guardar fecha_check_in, fecha_check_out, estado = `"pendiente"`  
    4.2 Asignar huesped_id y habitacion_id  
 5. **Calcular y mostrar monto estimado**
 
@@ -70,7 +70,7 @@ El estado inicial de la reserva es **`pendiente`**.
 
 ### Refinamiento - Nivel 2
 1. **Validar fechas**
-   - Si checkin ≥ checkout → Error  
+   - Si fecha_check_in ≥ fecha_check_out → Error  
    - Si noches > 14 → Error  
    - Si cantidad huéspedes < 1 → Error  
 
@@ -101,14 +101,14 @@ El estado inicial de la reserva es **`pendiente`**.
 ### Pseudocódigo
 ```pseudo
 INICIO REGISTRAR_RESERVA 
-LEER habitacion_id, checkin_date, checkout_date, cantidad_huespedes 
+LEER habitacion_id, fecha_check_in, fecha_check_out, cantidad_huespedes 
 LEER nombre, documento, email, telefono 
 // Validar fechas 
-SI checkin_date ≥ checkout_date ENTONCES 
+SI fecha_check_in ≥ fecha_check_out ENTONCES 
   MOSTRAR "Error: Fechas inválidas" 
   TERMINAR 
 FIN SI 
-SI DIAS_ENTRE(checkin_date, checkout_date) > 14 ENTONCES 
+SI DIAS_ENTRE(fecha_check_in, fecha_check_out) > 14 ENTONCES 
   MOSTRAR "Error: Máximo 14 noches permitidas" 
   TERMINAR 
 FIN SI 
@@ -123,7 +123,7 @@ SI habitacion.capacidad < cantidad_huespedes ENTONCES
   TERMINAR 
 FIN SI
 
-SI EXISTE_SOLAPAMIENTO(habitacion_id, checkin_date, checkout_date) 
+SI EXISTE_SOLAPAMIENTO(habitacion_id, fecha_check_in, fecha_check_out) 
 ENTONCES 
   MOSTRAR "Error: Habitación no disponible en ese rango" 
   TERMINAR 
@@ -139,12 +139,12 @@ reserva ← {
   id: reserva_id, 
   huesped_id: huesped.id, 
   habitacion_id: habitacion.id, 
-  checkin_date: checkin_date, 
-  checkout_date: checkout_date, 
+  fecha_check_in: fecha_check_in, 
+  fecha_check_out: fecha_check_out, 
   estado: "pendiente" 
 } 
 AGREGAR_A_LISTA_RESERVAS(reserva) 
 // Calcular monto estimado 
-monto ← CALCULAR_MONTO(habitacion.tarifa, checkin_date, checkout_date, 
+monto ← CALCULAR_MONTO(habitacion.tarifa, fecha_check_in, fecha_check_out, 
 cantidad_huespedes) 
 // Salida
