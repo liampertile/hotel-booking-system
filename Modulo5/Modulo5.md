@@ -2,6 +2,7 @@
 
 ### Objetivo
 Formalizar la llegada del huésped y marcar la ocupación real de la habitación. Este proceso debe asegurar que la reserva esté confirmada, la habitación esté preparada y se realice dentro del rango de la fecha de check-in.
+
 ---
 
 ### Entradas
@@ -22,7 +23,6 @@ Formalizar la llegada del huésped y marcar la ocupación real de la habitación
 
 ### Salida
 
-- La reserva asociada a la habitación queda ocupada.
 - La habitación cambia su estado a **"ocupada"**.
 - Mensaje informativo con el resultado del proceso.
 ---
@@ -34,8 +34,7 @@ Formalizar la llegada del huésped y marcar la ocupación real de la habitación
 3. Verificar que la habitación asociada esté en estado **"preparada"**.
 4. Comprobar que la operación se realice dentro de la fecha de check-in permitida.
 5. Actualizar el estado de la habitación a **"ocupada"**.
-6. Vincular la reserva a la habitación como la ocupación actual.
-7. Retornar el estado de la operación y la confirmación de la ocupación.
+6. Retornar el estado de la operación y la confirmación de la ocupación.
 ---
 
 ### Refinamiento - Nivel 1
