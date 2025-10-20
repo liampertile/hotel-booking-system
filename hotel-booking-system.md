@@ -20,7 +20,7 @@
    - [3.3 Interpretación global](#33-interpretación-global)
 4. [Diagrama de estados](#4-diagrama-de-estados)
 5. [Desarrollo de módulos](#5-desarrollo-de-módulos)
-   - [Módulo 1](#Módulo-2-consulta-de-disponibilidad)
+   - [Módulo 1](#Módulo-1-consulta-de-disponibilidad)
    - [Módulo 2](#Módulo-2-registro-de-reserva)
    - [Módulo 3](#Módulo-3-confirmación-de-reserva)
    - [Módulo 4](#Módulo-4-preparación-de-la-habitación)
