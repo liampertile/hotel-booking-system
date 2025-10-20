@@ -54,7 +54,9 @@ A partir del relevamiento, se determinaron cinco módulos funcionales que reflej
 - **Registro de reserva**: genera una nueva reserva en estado pendiente, asociando los datos del huésped y el detalle de la solicitud.  
 - **Confirmación de reserva**: actualiza el estado de la reserva a confirmada una vez verificado el pago o garantía correspondiente.  
 - **Preparación de la habitación**: coordina las tareas internas previas al check-in, como limpieza, reposición de insumos y control de mantenimiento.  
-- **Check-in y atención al huésped**: formaliza el ingreso del huésped, valida su identidad y marca la habitación como ocupada dentro del sistema.  
+- **Check-in y atención al huésped**: formaliza el ingreso del huésped, valida su identidad y marca la habitación como ocupada dentro del sistema.
+
+Junto con un módulo adicional **Check-out y liberación de la habitación** uqe nos permita gestionar de forma adecuada lo qeu respecta a la salida del huésped y la liberación de la habitación, para su posterior preparación.
 
 Los módulos se integran de manera secuencial y dependiente, garantizando que la salida de un proceso constituya la entrada del siguiente.  
 Esta estructura minimiza errores operativos y refuerza la coherencia interna del sistema.
@@ -86,9 +88,9 @@ El diseño busca garantizar:
 
 ### 1.4 Objetivo General
 
-Desarrollar un sistema integral de gestión hotelera que administre de forma ordenada y eficiente el ciclo completo de una reserva —desde la consulta inicial hasta el check-in—, garantizando la consistencia de los datos, la eficiencia operativa y una experiencia fluida tanto para el huésped como para el personal del hotel.  
+Desarrollar un sistema integral de gestión hotelera que administre de forma ordenada y eficiente el ciclo completo de una reserva —_desde la consulta inicial hasta el check-in_—, garantizando la consistencia de los datos, la eficiencia operativa y una experiencia fluida tanto para el huésped como para el personal del hotel.  
 
-El sistema busca modernizar la operatoria interna, reducir errores humanos y establecer una base sólida para futuras mejoras tecnológicas, como la integración con plataformas de reservas en línea o sistemas de gestión contable.
+El sistema busca modernizar la operatoria interna, reducir errores humanos y establecer una base sólida para futuras mejoras tecnológicas, como la integración con posibles neuvos módulos.
 
 ---
 
@@ -100,20 +102,22 @@ El Diagrama Entidad–Relación (DER) define la estructura lógica de los datos 
 
 El diseño presentado contempla cinco entidades principales:
 
-- **Persona:** almacena los datos personales y de contacto tanto de huéspedes como del personal del hotel. Incluye campos como nombre, DNI, correo electrónico, teléfono y tipo de persona (cliente o staff).  
-- **Reserva:** representa el núcleo del sistema. Registra las operaciones de reserva de habitaciones, vinculando un huésped con una habitación durante un rango de fechas determinado.  
-- **Habitación:** modela las unidades físicas del hotel. Cada registro posee atributos de capacidad, tarifa, estado actual (disponible, ocupada, en preparación) y fecha de habilitación.  
-- **Pago:** almacena la información de los pagos efectuados para confirmar reservas. Incluye monto, moneda, método de pago, estado y fecha de creación.  
-- **Tarea:** representa las actividades operativas relacionadas con la preparación de las habitaciones (limpieza, reposición, mantenimiento).  
+- **Persona:** almacena los datos personales y de contacto tanto de huéspedes. Incluye campos como nombre, DNI, correo electrónico y teléfono.  
+- **Reserva:** representa el núcleo del sistema. Registra las operaciones de reserva de habitaciones, vinculando un huésped con una habitación durante un rango de fechas determinado. Contiene información como el estado (pendiente, confirmado), el monto total, las fechas de check-in/check-out y referencias a la habitación y al cliente.  
+- **Habitación:** modela las unidades físicas del hotel. Cada registro posee atributos de capacidad, tarifa, estado actual (libre, ocupada, preparada, en preparación) y fecha de habilitación. Además, incluye una relación hacia la entidad Reserva, permitiendo conocer qué reserva está asociada actualmente a cada habitación.  
+- **Pago:** almacena la información de los pagos efectuados para confirmar reservas. Cada pago se vincula a una reserva específica e incluye monto, moneda, método de pago, estado (autorizado, capturado, reintegrado, anulado) y la fecha de creación. Esta entidad garantiza trazabilidad en las transacciones y permite registrar múltiples pagos por una misma reserva si fuera necesario.
+- **Tarea:** representa las actividades operativas relacionadas con la preparación de las habitaciones (limpieza, reposición, mantenimiento). Incluye fechas de asignación, inicio, finalización y validación, así como referencias al miembro del staff responsable y al validador. Además, está directamente asociada a la Habitación, lo que permite gestionar el estado operativo previo al check-in. El estado (pendiente, en progreso y finalizado). El campo validada puede ser de tipo “noValidada”, “bienHecha” o “malHecha”.
+- **Staff:** Hace referencia al personal del hotel, contiene los datos personales (nombre, dni), el estado en el que se encuentran (ocupado o no) y el tipo de personal (limpieza, administración).
 
 Relaciones principales:
 
 - Una Persona puede generar muchas Reservas (1:N).  
 - Una Reserva está asociada a una sola Habitación, pero una habitación puede tener muchas Reservas a lo largo del tiempo (N:1).  
 - Una Reserva puede estar vinculada con uno o más Pagos (1:N).  
-- Una Habitación puede tener muchas Tareas asignadas (1:N).  
+- Una Habitación puede tener muchas Tareas asignadas (1:N), las cuales son ejecutadas y validadas por el staff.  
 
-El modelo refleja un esquema relacional normalizado que favorece la integridad referencial y evita redundancias.
+El modelo refleja un esquema relacional normalizado que favorece la integridad referencial y evita redundancias. El diseño también permite futuras extensiones, como la incorporación de entidades de Check-out, Facturación, Servicios adicionales o Reportes estadísticos, manteniendo la misma lógica estructural y la coherencia de los datos.
+
 
 ---
 
@@ -128,11 +132,11 @@ Cada proceso se encuentra interconectado de forma lógica, evidenciando la depen
 
 Principales flujos identificados:
 
-- Interacción con el huésped (consulta → check-in).  
-- Procesos administrativos del personal del hotel y sistema de pagos.  
-- Bases de datos centrales: Habitación, Reserva, Pago, Persona y Tarea.
+- La **interacción con el huésped**, que inicia el proceso al consultar disponibilidad y culmina con la notificación de check-in exitoso.
+- Los **procesos administrativos**, donde el personal del hotel y el sistema de pagos gestionan las operaciones críticas de confirmación, limpieza y ocupación.
+- Las **bases de datos centrales** —_Habitación, Reserva, Pago, Persona y Tarea_— que actúan como repositorios intermedios garantizando la persistencia y validación de la información.
 
-Este nivel permite comprender el funcionamiento global del sistema como un ecosistema integrado, donde cada módulo realiza una función específica y contribuye a mantener la coherencia del flujo operativo.
+Este nivel permite comprender el **funcionamiento global del sistema como un ecosistema integrado**, donde cada módulo realiza una función específica y contribuye a mantener la coherencia del flujo operativo.
 
 ---
 
@@ -161,7 +165,7 @@ El huésped ingresa sus datos y selecciona una habitación disponible. Se verifi
 
 - **Entradas:** datos del huésped, habitación seleccionada.  
 - **Salidas:** confirmación provisional, número de reserva.  
-- **Almacenamientos:** Persona, Habitación, Reserva.  }
+- **Almacenamientos:** Persona, Habitación, Reserva. 
 
 Este módulo inicia la persistencia de datos, ya que introduce registros nuevos que serán validados en los siguientes procesos.
 
@@ -202,7 +206,7 @@ El proceso promueve la gestión de calidad interna, permitiendo al hotel mantene
 #### 3.2.5 Módulo 5
 
 Etapa final del ciclo operativo (check-in).  
-El huésped se presenta con su documento y número de reserva; el sistema valida y actualiza estados a `ocupada` y `checked_in`.
+El huésped se presenta con su documento y número de reserva; el sistema valida y actualiza estados a `ocupada` y `confirmado`.
 
 - **Entradas:** reserva confirmada, identificación del huésped.  
 - **Salidas:** notificación de check-in exitoso, habitación ocupada.  
@@ -283,7 +287,7 @@ El modelo muestra un flujo continuo y cerrado de operaciones que garantiza la co
 - **Preparación de habitación:** el módulo interno (`Preparacion_Habitacion`) gestiona tareas como limpieza, mantenimiento o reposición.  
   Este subproceso controla los estados **`En_Preparacion`** y **`Preparada`**, evitando que se asigne una habitación sin validar.
 
-- **Check-in:** cuando la habitación está lista, el huésped realiza el ingreso y la reserva cambia a **`checked_in`**.  
+- **Check-in:** cuando la habitación está lista, el huésped realiza el ingreso y la reserva cambia a **`confirmado`**.  
   Este paso consolida la ocupación efectiva y marca el inicio de la estadía.
 
 - **Check-out:** al finalizar la estadía, el staff ejecuta el cierre del ciclo.  
