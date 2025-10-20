@@ -632,93 +632,93 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 ### Refinamiento - Nivel 1
 
 1. Realizar comprobaciones de la habitación.
-   1.1 Comprobar si la habitación asignada ya se encuentra limpia.
-      1.1.1 Verificar si el estado de la habitación es "preparada"
-   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
-      1.2.1 Verificar si existe una nueva reserva válida.
-   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
-      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
+  * 1.1 Comprobar si la habitación asignada ya se encuentra limpia.
+     * 1.1.1 Verificar si el estado de la habitación es "preparada"
+  * 1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
+     * 1.2.1 Verificar si existe una nueva reserva válida.
+  * 1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
+     * 1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
 
 2. Reestablecer el estado de preparación de la habitación.
-   2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
+  * 2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
 
 3. Asignar tareas de preparación a personal disponible.
-   3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
+  * 3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
 
 4. Gestionar ejecución de tareas
-   4.1 Iniciar tarea.
-   4.2 Finalizar tarea.
-   4.3 Validar tarea.
+  * 4.1 Iniciar tarea.
+  * 4.2 Finalizar tarea.
+  * 4.3 Validar tarea.
 
 5. Verificar que todas las tareas estén validadas para preparar la habitación.
-   5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+  * 5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
 
 ### Refinamiento - Nivel 2
 
 1. Realizar comprobaciones de la habitación.
-   1.1 Comprobar si la habitación asignada ya se encuentra limpia.
-      1.1.1 Verificar si el estado de la habitación es "preparada"
-         1.1.1.1 Obtener la habitación
-         1.1.1.2 Si el estado es "preparada" entonces
-            1.1.1.2.1 Mostrar "No se preparará la habitación porque ya se encuentra en este estado".
-         1.1.1.3 Sino
-            1.1.1.3.1 Mostrar "La habitación no se encuentra preparada".
-   1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
-         1.2.1 Verificar si existe una nueva reserva válida.
-            1.2.1.1 Obtener la reserva
-            1.2.1.2 Si la fecha_check_in asociada a la reserva es mayor a la fecha_actual y las condiciones de reserva son válidas
-               1.2.1.2.1 Mostrar "La habitación tiene una próxima reserva".
-            1.2.1.3 Sino
-               1.2.1.3.1 Mostrar "La habitación no tiene una próxima reserva".
-   1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
-      1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
-         1.3.1.1 Obtener la habitación.
-         1.3.1.2 Si el estado de la habitación asociada a la reserva es "ocupada"
-            1.3.1.2.1 Mostrar "La habitación se encuentra ocupada, no se procede a preparar".
-         1.3.1.3 Sino
-            1.3.1.3.1 Mostrar "La habitación se encuentra desocupada, se procede a preparar".
+  * 1.1 Comprobar si la habitación asignada ya se encuentra limpia.
+     * 1.1.1 Verificar si el estado de la habitación es "preparada"
+        * 1.1.1.1 Obtener la habitación
+        * 1.1.1.2 Si el estado es "preparada" entonces
+           * 1.1.1.2.1 Mostrar "No se preparará la habitación porque ya se encuentra en este estado".
+        * 1.1.1.3 Sino
+           * 1.1.1.3.1 Mostrar "La habitación no se encuentra preparada".
+  * 1.2 Comprobar si la habitación asignada ya fue reservada nuevamente.
+        * 1.2.1 Verificar si existe una nueva reserva válida.
+           * 1.2.1.1 Obtener la reserva
+           * 1.2.1.2 Si la fecha_check_in asociada a la reserva es mayor a la fecha_actual y las condiciones de reserva son válidas
+              * 1.2.1.2.1 Mostrar "La habitación tiene una próxima reserva".
+           * 1.2.1.3 Sino
+              * 1.2.1.3.1 Mostrar "La habitación no tiene una próxima reserva".
+  * 1.3 Comprobar si la habitación asignada ya no se encuentra ocupada.
+     * 1.3.1 Verificar si el estado de la habitación asignada ya no es "ocupada".
+        * 1.3.1.1 Obtener la habitación.
+        * 1.3.1.2 Si el estado de la habitación asociada a la reserva es "ocupada"
+           * 1.3.1.2.1 Mostrar "La habitación se encuentra ocupada, no se procede a preparar".
+        * 1.3.1.3 Sino
+           * 1.3.1.3.1 Mostrar "La habitación se encuentra desocupada, se procede a preparar".
 
 2. Reestablecer el estado de preparación de la habitación.
-	2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
-		2.1.1 Obtener la lista de tareas asociada a la habitación.
-		2.1.2 Para cada tarea de la lista de tareas asociada a la habitación.
-			2.1.2.1. Establecer estado en pendiente. 
-			2.1.2.2. Establecer validación en FALSO.
-		2.1.3 Cambiar estado de la habitación a "libre".
+	* 2.1 Establecer como pendiente cada actividad y el estado general de preparación de la habitación.
+		* 2.1.1 Obtener la lista de tareas asociada a la habitación.
+		* 2.1.2 Para cada tarea de la lista de tareas asociada a la habitación.
+			* 2.1.2.1. Establecer estado en pendiente. 
+			* 2.1.2.2. Establecer validación en FALSO.
+		* 2.1.3 Cambiar estado de la habitación a "libre".
 
 3. Asignar tareas de preparación a personal disponible.
-	3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
-		3.1.1 Obtener una lista de staff de personal de limpieza no ocupado
-		3.1.2 Para tantas personas de la lista como tareas haya
-			3.1.2.1 Asignar una tarea en estado “pendiente”.
-   		3.1.2.2 Registrar fecha de asignación con fecha_actual.
-			3.1.2.3 Registrar el staff responsable de la tarea.
-        	3.1.2.4 Cambiar estado “ocupado” de la persona a FALSO.
+	* 3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
+		* 3.1.1 Obtener una lista de staff de personal de limpieza no ocupado
+		* 3.1.2 Para tantas personas de la lista como tareas haya
+			* 3.1.2.1 Asignar una tarea en estado “pendiente”.
+   		* 3.1.2.2 Registrar fecha de asignación con fecha_actual.
+			* 3.1.2.3 Registrar el staff responsable de la tarea.
+        	* 3.1.2.4 Cambiar estado “ocupado” de la persona a FALSO.
 
 4. Gestionar ejecución de tareas
-	4.1 Iniciar tarea.
-    	4.1.1 Seleccionar tarea en estado “pendiente”.
-    	4.1.2 Cambiar estado a “enProgreso”.
-    	4.1.3 Registrar fecha_inicio como fecha_actual.
-	4.2 Finalizar tarea.
-    	4.2.1 Seleccionar tarea en estado “enProgreso”.
-    	4.2.2 Cambiar estado a “finalizado”.
-    	4.2.3 Registrar fecha_fin como fecha_actual.
-	4.3 Validar tarea.
-    	4.3.1 Seleccionar tarea en estado “finalizado”.
-    	4.3.2 Registrar fecha_validación como fecha_actual.
-		4.3.3 Establecer el atributo validada según corresponda.
+	* 4.1 Iniciar tarea.
+    	* 4.1.1 Seleccionar tarea en estado “pendiente”.
+    	* 4.1.2 Cambiar estado a “enProgreso”.
+    	* 4.1.3 Registrar fecha_inicio como fecha_actual.
+	* 4.2 Finalizar tarea.
+    	* 4.2.1 Seleccionar tarea en estado “enProgreso”.
+    	* 4.2.2 Cambiar estado a “finalizado”.
+    	* 4.2.3 Registrar fecha_fin como fecha_actual.
+	* 4.3 Validar tarea.
+    	* 4.3.1 Seleccionar tarea en estado “finalizado”.
+    	* 4.3.2 Registrar fecha_validación como fecha_actual.
+		* 4.3.3 Establecer el atributo validada según corresponda.
 
 5. Verificar que todas las tareas estén validadas para preparar la habitación.
-	5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
-		5.1.1 Obtener la lista de tareas asociadas a la habitación.
-		5.1.2 Para cada tarea dentro de la lista
-			5.1.2.1 Si la tarea no está validada o su fecha_validacion supera fecha_check_in
-				5.1.2.1.1 Establecer que no todas las tareas están validadas
-		5.1.3 Si todas las tareas están validadas
-			5.1.3.1 Ejecutar EstablecerHabitacionPreparada(habitaciónId)
-		5.1.4 Sino
-			5.1.4.1 Regresar al menú de validación de actividades.
+	* 5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+		* 5.1.1 Obtener la lista de tareas asociadas a la habitación.
+		* 5.1.2 Para cada tarea dentro de la lista
+			* 5.1.2.1 Si la tarea no está validada o su fecha_validacion supera fecha_check_in
+				* 5.1.2.1.1 Establecer que no todas las tareas están validadas
+		* 5.1.3 Si todas las tareas están validadas
+			* 5.1.3.1 Ejecutar EstablecerHabitacionPreparada(habitaciónId)
+		* 5.1.4 Sino
+			* 5.1.4.1 Regresar al menú de validación de actividades.
 
 ### Pseudocódigo
 
@@ -858,6 +858,131 @@ PROCESO ValidarTarea(habitacionId)
    FIN SI
 FIN PROCESO
 ```
+
+
+
+## Módulo 5: Check-in y atención al huésped
+
+### Objetivo
+Formalizar la llegada del huésped y marcar la ocupación real de la habitación. Este proceso debe asegurar que la reserva esté confirmada, la habitación esté preparada y se realice dentro del rango de la fecha de check-in.
+
+---
+
+### Entradas
+
+- **reserva_id** *(número)*: Identificador único de la reserva para realizar el check-in.
+- **identificacion_huesped** *(string)*: Documento de identidad presentado por la persona que se presenta para el check-in.
+  
+---
+
+### Reglas y validaciones
+
+- La reserva identificada por `reserva_id` debe existir.
+- La reserva debe estar en estado **"confirmed"**.
+- La habitación asociada a la reserva debe estar en estado **"preparada"**.
+- El check-in debe realizarse en la fecha de check-in registrada en la reserva o en una fecha cercana (dentro de un rango de tolerancia, por ejemplo, el mismo día).
+- La identificación presentada (`identificacion_huesped`) debe coincidir con el DNI del huésped titular de la reserva.
+- El proceso debe modificar el estado de la habitación a **"ocupada"**.
+  
+---
+
+### Salida
+
+- La reserva asociada a la habitación queda ocupada.
+- La habitación cambia su estado a **"ocupada"**.
+- Mensaje informativo con el resultado del proceso.
+  
+---
+
+### Algoritmo
+
+1. Validar la existencia de la reserva y su estado (debe ser **"confirmed"**).
+2. Verificar la identidad del huésped, comparando la identificación presentada con la registrada en la reserva.
+3. Verificar que la habitación asociada esté en estado **"preparada"**.
+4. Comprobar que la operación se realice dentro de la fecha de check-in permitida.
+5. Actualizar el estado de la habitación a **"ocupada"**.
+6. Vincular la reserva a la habitación como la ocupación actual.
+7. Retornar el estado de la operación y la confirmación de la ocupación.
+   
+---
+
+### Refinamiento - Nivel 1
+
+1.  **Validar reserva y habitación:**
+   * 1.1. Buscar reserva que coincida con el numero de reserva del cliente.
+   * 1.2. Verificar que el estado de la reserva sea **"confirmed"**.
+   * 1.3. Comparar la `identificacion_huesped` presentada con el documento del titular de la reserva.
+2.  **Validar Habitación:**
+   * 2.1. Obtener la habitación vinculada a la reserva.
+   * 2.2. Verificar que el estado de la habitación sea **"preparada"**.
+3.  **Validar fecha de check-in:**
+   * 3.1. Comprobar que la fecha actual sea igual o posterior a la `fecha_check_in` de la reserva.
+4.  **Registrar ocupación:**
+   * 4.1. Marcar la habitación como **"Ocupada"**.
+5.  **Devolver confirmación.**
+     
+---
+
+### Refinamiento - Nivel 2
+
+1.  **Validar Reserva y Habitación:**
+   * 1.1. Buscar la reserva utilizando el `reserva_id`.
+       * 1.1.1. Si la reserva no se encuentra → Error
+   * 1.2. Si el estado de la reserva es distinto de **"confirmed"** → Error
+   * 1.3. Obtener los datos del huésped titular asociado a la reserva.
+       * 1.3.1. Si la `identificacion_huesped` no coincide con el documento del huésped titular → Error
+2.  **Validar Habitacion**
+   * 2.1. Obtener la habitación vinculada a la `reserva.habitacion_id`.
+   * 2.2. Si el estado de la habitación es distinto de **"preparada"** → Error
+3.  **Validar Fecha y Hora:**
+   * 3.1. Si `fecha actual` < `fecha_check_in` → Error
+4.  **Registrar Ocupación:**
+   * 4.1. Modificar el estado de la habitación a **"ocupada"**.
+5.  **Salida:**
+   * 5.1. MOSTRAR ”Check-in realizado. Habitación `habitacion.id` ocupada por la Reserva `reserva_id`.”
+
+### Pseudocodigo
+
+```pseudo
+INICIO CHECK_IN(reserva_id, identificacion_huesped)
+
+reserva ← BUSCAR_RESERVA(reserva_id)
+SI reserva = NULO ENTONCES
+    MOSTRAR "Error: Reserva inexistente"
+    TERMINAR
+FIN SI
+
+SI reserva.estado ≠ "confirmed" ENTONCES
+    MOSTRAR "Error: La reserva no está confirmada"
+    TERMINAR
+FIN SI
+
+huesped ← BUSCAR_HUESPED(reserva.huesped_id)
+SI huesped.dni ≠ identificacion_huesped ENTONCES
+    MOSTRAR "Error: La identificación no coincide con el titular"
+    TERMINAR
+FIN SI
+
+habitacion ← BUSCAR_HABITACION(reserva.habitacion_id)
+SI habitacion.estado ≠ "preparada" ENTONCES
+    MOSTRAR "Error: La habitación no está lista para el check-in"
+    TERMINAR
+FIN SI
+
+SI FECHA_ACTUAL < reserva.fecha_check_in ENTONCES
+    MOSTRAR "Error: Check-in anticipado no permitido"
+    TERMINAR
+FIN SI
+
+habitacion.estado ← "ocupada"
+
+MOSTRAR "Check-in realizado. Habitación " + habitacion.id + " ocupada."
+
+FIN
+```
+
+
+
 ## Módulo 6 Checkout y liberación de la habitación
 
 ### Objetivo
@@ -907,32 +1032,32 @@ Una vez realizado el check-out:
 ### Refinamiento - Nivel 1
 
 1. Se libera la habitación.
-   1.1 Actualizar estado de la habitación.
+   * 1.1 Actualizar estado de la habitación.
 2. Se finaliza la reserva.
-   2.1 Actualizar estado de la reserva.
+  * 2.1 Actualizar estado de la reserva.
 3. Se prepara la habitación.
-   3.1 Ejecutar PrepararHabitación(habitacion_id, reserva_id).
+  * 3.1 Ejecutar PrepararHabitación(habitacion_id, reserva_id).
 
 ### Refinamiento - Nivel 2
 
 1. Se libera la habitación.
-   1.1 Actualizar estado de la habitación.
-   1.2 Obtener la habitación por id.
-   1.3 Si la habitación no existe → Mostrar "Habitación inexistente".
-   1.4 Sino:
+  * 1.1 Actualizar estado de la habitación.
+  * 1.2 Obtener la habitación por id.
+  * 1.3 Si la habitación no existe → Mostrar "Habitación inexistente".
+  * 1.4 Sino:
        - Si el estado de la habitación es "ocupado" → Cambiar el estado a "libre".
        - Sino → Mostrar "La habitación no se encuentra ocupada".
 
 2. Se finaliza la reserva.
-   2.1 Actualizar estado de la reserva.
-   2.2 Obtener la reserva por id.
-   2.3 Si la reserva no existe → Mostrar "Reserva inexistente".
-   2.4 Sino:
+  * 2.1 Actualizar estado de la reserva.
+  * 2.2 Obtener la reserva por id.
+  * 2.3 Si la reserva no existe → Mostrar "Reserva inexistente".
+  * 2.4 Sino:
        - Establecer el estado de la reserva en "finalizada".
        - Registrar la fecha de check-out con la fecha actual.
 
 3. Se prepara la habitación.
-   3.1 Ejecutar PrepararHabitación(habitacion_id, reserva_id).
+  * 3.1 Ejecutar PrepararHabitación(habitacion_id, reserva_id).
 
 ### Pseudocódigo
 
