@@ -142,7 +142,7 @@ PROCESO Modulo 1
 
 		solapa <- FALSO
 		PARA CADA r EN reservasActivas HACER
-			SI NO (r.fecha_check_out ≤ fecha_check_in O r.fecha_check_in ≥ fechafecha_check_out) ENTONCES
+			SI (r.fecha_check_out ≥ fecha_check_in o r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
 				solapa <- VERDADERO
 				SALIR //cortar evaluación de reservas de esta habitación.
 			FIN SI
