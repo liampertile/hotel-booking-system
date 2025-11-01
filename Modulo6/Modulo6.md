@@ -8,17 +8,16 @@ El proceso debe asegurar que la reserva esté activa, que la habitación esté a
 
 ## Entradas
 
-- **habitacion_id (número):** Identificador único de la habitación que se desea liberar.  
 - **reserva_id (número):** Identificador único de la reserva asociada al huésped que realiza el check-out.
 
 ---
 
 ## Reglas y validaciones
 
-1. La habitación identificada por `habitacion_id` debe existir.  
+1. La habitación identificada por `habitacion_id` debe existir.  ELIMINAR
 2. La reserva identificada por `reserva_id` debe existir.  
 3. La habitación debe estar en estado **“ocupada”**.  
-4. La reserva asociada debe estar en estado **“confirmada”** o **“en curso”**.  
+4. La reserva asociada debe estar en estado **“confirmada”** 
 
 Una vez realizado el check-out:
 
@@ -30,9 +29,7 @@ Una vez realizado el check-out:
 
 ## Salida
 
-- La habitación queda liberada (`estado = "libre"`).  
 - La reserva pasa al estado **“finalizada”**.  
-- Se ejecuta el proceso de limpieza y preparación (`PrepararHabitación(habitacion_id, reserva_id)`).  
 - Se muestra un mensaje informativo con el resultado del proceso y la hora exacta del check-out registrado.
 
 ---
