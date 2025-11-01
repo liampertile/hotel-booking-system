@@ -8,7 +8,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
 
 - **fecha_check_in** _(fecha)_: inclusive, es decir, ese día la habitación debe estar libre.
 - **fecha_check_out** _(fecha)_: exclusivo, ya que ese día el huésped se retirará de la habitación.
-- **cantidad_huest** _(número)_: indica el número de huéspedes que albergará la habitación.
+- **cantidad_huespedes** _(número)_: indica el número de huéspedes que albergará la habitación.
 
 ### Reglas y validaciones
 
