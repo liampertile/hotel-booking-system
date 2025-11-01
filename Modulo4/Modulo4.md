@@ -36,7 +36,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 2. Reestablecer estado de preparación de la habitación.
 3. Asignar tareas de preparación a personal disponible.
 4. Gestionar ejecución de tareas.
-5. Verificar que todas las tareas estén validadas para preparar la habitación.
+5. Verificar que todas las tareas estén hechas para preparar la habitación.
 ```
 
 ### Refinamiento - Nivel 1
@@ -61,8 +61,8 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 	4.2 Finalizar tarea.
 	4.3 Validar tarea.
 
-5. Verificar que todas las tareas estén validadas para preparar la habitación.
-	5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+5. Verificar que todas las tareas estén hechas para preparar la habitación.
+	5.1. Comprobar la realización de cada tarea.
 ```
 ### Refinamiento - Nivel 2
 
@@ -123,7 +123,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 		4.3.3 Establecer el atributo validada según corresponda.
 
 5. Verificar que todas las tareas estén hechas para preparar la habitación.
-	5.1. Comprobar realización de cada tarea
+	5.1. Comprobar realización de cada tarea.
 		5.1.1 Obtener la lista de tareas asociadas a la habitación.
 		5.1.2 Para cada tarea dentro de la lista
 			5.1.2.1 Si la tarea no está hecha
