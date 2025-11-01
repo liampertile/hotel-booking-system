@@ -91,6 +91,10 @@ FIN SI
 // 3. Validar Habitación
 habitacion ← BUSCAR_HABITACION(reserva.habitacion_id)
 SI habitacion.estado ≠ "preparada" ENTONCES
+   Para cada tarea en habitación
+      SI tarea.estado ≠ "finalizado" ENTONCES
+         tarea.estado = "malHecha"
+SINO
     MOSTRAR "Error: La habitación no está lista para el check-in"
     TERMINAR
 FIN SI
