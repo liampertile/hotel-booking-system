@@ -8,23 +8,12 @@ El estado inicial de la reserva es **`pendiente`**.
 ---
 
 ### Entradas
-- **habitacion_id** *(número)*: ID de la habitación seleccionada.  
-- **fecha_check_in** *(Date)*: Fecha de entrada (inclusive).  
-- **fecha_check_out** *(Date)*: Fecha de salida (exclusiva).  
-- **cantidad_huespedes** *(entero)*: Número de personas a alojar.  
+- **habitacion_id** *(número)*: ID de la habitación seleccionada.   
 - **huesped** *(objeto)*:
-  - nombre *(string)*
-  - documento *(string)*
-  - email *(string)*
-  - telefono *(string)*
 
 ---
 
 ### Reglas y validaciones
-- La fecha de check-in debe ser anterior a la de check-out.  
-- El rango máximo es de **14 noches**.  
-- La habitación debe existir, estar activa y tener capacidad suficiente.  
-- La habitación no debe tener solapamiento con otra reserva *pendiente* o *confirmada*.  
 - Los datos del huésped deben estar completos y válidos.  
 - Al registrar la reserva, la habitación queda bloqueada para ese rango de fechas (por *X minutos*).
 
@@ -32,10 +21,8 @@ El estado inicial de la reserva es **`pendiente`**.
 
 ### Salida
 - **reserva_id**: número/código único generado.  
-- **Estado inicial**: `"pendiente"`  
-- **Monto estimado** = *(tarifa base × noches × cantidad huéspedes + impuestos estimados)*  
 - Se registra el huésped si no existía.  
-- Se asocia la habitación a la reserva.
+
 
 ---
 
