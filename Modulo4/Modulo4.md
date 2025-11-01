@@ -96,7 +96,6 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 		2.1.2 Para cada tarea de la lista de tareas asociada a la habitación.
 			2.1.2.1. Establecer estado en pendiente. 
 			2.1.2.2. Establecer validación en FALSO.
-		2.1.3 Cambiar estado de la habitación a "libre".
 
 3. Asignar tareas de preparación a personal disponible.
 	3.1. Vincular cada tarea a un personal de limpieza del hotel disponible.
@@ -105,34 +104,34 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 			3.1.2.1 Asignar una tarea en estado “pendiente”.
        			3.1.2.2 Registrar fecha de asignación con fecha_actual.
 			3.1.2.3 Registrar el staff responsable de la tarea.
-        		3.1.2.4 Cambiar estado “ocupado” de la persona a FALSO.
+        		3.1.2.4 Cambiar estado “ocupado” de la persona a VERDADERO.
 
 4. Gestionar ejecución de tareas
 	4.1 Iniciar tarea.
-    		4.1.1 Seleccionar tarea en estado “pendiente”.
-    		4.1.2 Cambiar estado a “enProgreso”.
-    		4.1.3 Registrar fecha_inicio como fecha_actual.
+		4.1.1 Seleccionar tarea en estado “pendiente”.
+		4.1.2 Cambiar estado a “enProgreso”.
+		4.1.3 Registrar fecha_inicio como fecha_actual.
 
 	4.2 Finalizar tarea.
-    		4.2.1 Seleccionar tarea en estado “enProgreso”.
-    		4.2.2 Cambiar estado a “finalizado”.
-    		4.2.3 Registrar fecha_fin como fecha_actual.
+		4.2.1 Seleccionar tarea en estado “enProgreso”.
+		4.2.2 Cambiar estado a “finalizado”.
+		4.2.3 Registrar fecha_fin como fecha_actual.
 
 	4.3 Validar tarea.
-    		4.3.1 Seleccionar tarea en estado “finalizado”.
-    		4.3.2 Registrar fecha_validación como fecha_actual.
+		4.3.1 Seleccionar tarea en estado “finalizado”.
+		4.3.2 Registrar fecha_validación como fecha_actual.
 		4.3.3 Establecer el atributo validada según corresponda.
 
-5. Verificar que todas las tareas estén validadas para preparar la habitación.
-	5.1. Comprobar validez de cada tarea y verificar que la fecha de validación no sea mayor que la fecha de check-in.
+5. Verificar que todas las tareas estén hechas para preparar la habitación.
+	5.1. Comprobar realización de cada tarea
 		5.1.1 Obtener la lista de tareas asociadas a la habitación.
 		5.1.2 Para cada tarea dentro de la lista
-			5.1.2.1 Si la tarea no está validada o su fecha_validacion supera fecha_check_in
-				5.1.2.1.1 Establecer que no todas las tareas están validadas
-		5.1.3 Si todas las tareas están validadas
+			5.1.2.1 Si la tarea no está hecha
+				5.1.2.1.1 Establecer que no todas las tareas están hechas
+		5.1.3 Si todas las tareas están hechas
 			5.1.3.1 Ejecutar EstablecerHabitacionPreparada(habitaciónId)
 		5.1.4 Sino
-			5.1.4.1 Regresar al menú de validación de actividades.
+			5.1.4.1 Regresar al menú de realización de actividades.
 ```
 ### Pseudocódigo
 
