@@ -11,33 +11,26 @@ El proceso asegura que la reserva esté activa, que el importe sea correcto, que
 ## Entradas
 
 - **reserva_id (número):** Identificador único de la reserva a confirmar.  
-- **monto (número):** Importe abonado por el cliente.  
-- **moneda (string):** Tipo de moneda utilizada (por ejemplo, `ARS`).  
-- **metodo_pago (string):** Medio de pago empleado (tarjeta, efectivo, transferencia, etc.).  
-- **estado (string):** Estado del pago (`autorizado`, `capturado`, `anulado`).  
-- **staff_id (número):** Identificador del empleado (tipo *staff*) responsable de la confirmación.
+- %% REVISAR **staff_id (número):** Identificador del empleado (tipo *staff*) responsable de la confirmación. %%
 
 ---
 
 ## Reglas y Validaciones
 
 1. La reserva debe existir y encontrarse en estado `pendiente`.  
-2. Solo pueden confirmarse reservas que no estén canceladas ni completadas.  
-3. El monto del pago debe ser mayor que cero.  
-4. El estado del pago debe ser uno de los válidos: `autorizado`, `capturado`, o `anulado`.  
-5. Todo pago registrado debe incluir método, monto, moneda, estado y fecha de creación.  
-6. Si el pago fue capturado, la reserva cambia automáticamente a estado `confirmada`.  
-7. Si el pago no fue capturado, la reserva permanece `pendiente`.
+2. Solo pueden confirmarse reservas que no estén canceladas ni completadas.  ELIMINAR
+3. El monto del pago debe ser mayor que cero.  ELIMINAR/revisar
+4. El estado del pago debe ser uno de los válidos: `pagado`, `no pagado`  (MODULO QUE SIMULA EL BANCO)
+5. Todo pago registrado debe incluir método, monto, moneda, estado y fecha de creación.  ELIMINAR
+6. Si la reserva está en pendiente : (sino es porque esta cancelada)
+   7. Si el pago fue realizado, la reserva cambia automáticamente a estado `confirmada`.  
+   8. Si el pago no fue capturado, volver al 6.
 
 ---
 
 ## Salida
 
-- Estado final de la reserva (`confirmada` si el pago fue capturado; `pendiente` si no).  
-- Registro del pago con los campos: monto, moneda, método, estado y fecha de creación.  
-- Fecha y usuario que confirmaron la reserva (solo si fue capturada).  
-- Mensaje informativo con el resultado del proceso.
-
+- Estado final de la reserva (`confirmada` si el pago fue realizado; `cancelada` si se termino el tiempo de espera).  
 ---
 
 ## Algoritmo
