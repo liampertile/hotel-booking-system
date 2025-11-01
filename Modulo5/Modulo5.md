@@ -8,17 +8,11 @@ Formalizar la llegada del huésped y marcar la ocupación real de la habitación
 ### Entradas
 
 - **reserva_id** *(número)*: Identificador único de la reserva para realizar el check-in.
-- **identificacion_huesped** *(string)*: Documento de identidad presentado por la persona que se presenta para el check-in.
 ---
 
 ### Reglas y validaciones
 
-- La reserva identificada por `reserva_id` debe existir.
-- La reserva debe estar en estado **"confirmed"**.
-- La habitación asociada a la reserva debe estar en estado **"preparada"**.
-- El check-in debe realizarse en la fecha de check-in registrada en la reserva o en una fecha cercana (dentro de un rango de tolerancia, por ejemplo, el mismo día).
-- La identificación presentada (`identificacion_huesped`) debe coincidir con el DNI del huésped titular de la reserva.
-- El proceso debe modificar el estado de la habitación a **"ocupada"**.
+- El check-in debe realizarse en la fecha de check-in registrada en la reserva o en una fecha cercana (dentro de un rango de tolerancia, por ejemplo, el mismo día). ELIMINAR
 ---
 
 ### Salida
@@ -29,9 +23,9 @@ Formalizar la llegada del huésped y marcar la ocupación real de la habitación
 
 ### Algoritmo
 
-1. Validar la existencia de la reserva y su estado (debe ser **"confirmed"**).
-2. Verificar la identidad del huésped, comparando la identificación presentada con la registrada en la reserva.
-3. Verificar que la habitación asociada esté en estado **"preparada"**.
+1. Validar la existencia de la reserva y su estado (debe ser **"confirmed"**). ELIMINAR
+2. Verificar la identidad del huésped, comparando la identificación presentada con la registrada en la reserva. ELIMINAR
+3. Verificar que la habitación asociada esté en estado **"preparada"**. 
 4. Comprobar que la operación se realice dentro de la fecha de check-in permitida.
 5. Actualizar el estado de la habitación a **"ocupada"**.
 6. Retornar el estado de la operación y la confirmación de la ocupación.
