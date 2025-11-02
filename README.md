@@ -12,3 +12,4 @@
     <br> Agustín Contrera - Modulo 5 Check-in y Atención al Huesped
 
 **Documentación - borrador**: https://docs.google.com/document/d/17iPH6ktmMqhgvCqXcApoGmJO8qE2b78LCQpKW9ynJiY/edit?tab=t.0
+**Excalidraw**: https://excalidraw.com/#room=382d6f1406c34258588a,x20Tsj_nb4wqTVaRzOVwLQ
