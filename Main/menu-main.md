@@ -1,8 +1,8 @@
-# MÓDULO PRINCIPAL: MAIN (con menú y validaciones previas)
+# MÓDULO PRINCIPAL: MAIN
 
 ## Objetivo
 Orquestar la ejecución de los módulos del sistema hotelero mediante un menú, garantizando las precondiciones de negocio antes de invocar cada módulo.  
-Se valida el estado y los datos requeridos en un “gateway” previo por opción.
+Se valida el estado y los datos requeridos.
 
 ---
 
@@ -26,19 +26,6 @@ Se valida el estado y los datos requeridos en un “gateway” previo por opció
 ## Resultado
 - Operación ejecutada solo si las precondiciones se cumplen.  
 - Datos y estados consistentes en la base.  
-
----
-
-## Matriz de Precondiciones por Módulo
-
-| Opción | Módulo | Precondiciones (todas deben cumplirse) |
-|---|---|---|
-| 1 | Consulta de disponibilidad | `fecha_in < fecha_out`, noches ≤ 14, 1 ≤ capacidad ≤ 4 |
-| 2 | Registro de reserva | Huésped válido (o creable), habitación existente, capacidad suficiente, sin solapamientos en el rango |
-| 3 | Confirmación de reserva | Reserva existe y está `pendiente`, datos de pago presentes; el submódulo `realizacionDelPago` decide el resultado |
-| 4 | Preparación de habitación | Reserva `confirmada`, habitación no ocupada, tareas reiniciadas/asignables, personal disponible |
-| 5 | Check-in | Reserva `confirmada`, habitación `preparada`, fecha actual ≥ `fecha_check_in` |
-| 6 | Check-out | Reserva `confirmada`, habitación `ocupada` |
 
 ---
 
@@ -83,6 +70,7 @@ Se valida el estado y los datos requeridos en un “gateway” previo por opció
 
 ## Refinamiento – Nivel 2
 
+```
 PROCESO main
 opcion ← -1
 MIENTRAS opcion ≠ 0 HACER
@@ -151,7 +139,7 @@ LEER opcion
     FIN SEGÚN
 FIN MIENTRAS
 FIN PROCESO
-
+```
 
 ## validaciones
 
