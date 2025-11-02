@@ -27,15 +27,28 @@ El proceso abarca desde la consulta de disponibilidad hasta el check-out, integr
 
 ---
 
-## Salida
+## Resultado
 
 - Reserva finalizada y habitación liberada.  
 - Datos actualizados en la base de datos del sistema.  
-- Historial completo de los procesos ejecutados.
-
 ---
 
 ## Algoritmo General
+
+1. Ingreso de datos del huésped y fechas de estadía.  
+2. Validar las entradas  
+3. Ejecutar el Módulo 1 (Consulta de disponibilidad).  
+4. Seleccionar habitación y obtener datos del huésped.  
+5. Ejecutar el Módulo 2 (Registro de reserva).  
+6. Ejecutar el Módulo 3 (Confirmación de reserva).   
+7. Ejecutar el Módulo 4 (Preparación de habitación).  
+8. Ejecutar el Módulo 5 (Check-in y atención al huésped).  
+9. Ejecutar el Módulo 6 (Check-out).  
+10. Fin del proceso.
+
+---
+
+## Refinamiento - Nivel 1
 
 1. Ingreso de datos del huésped y fechas de estadía.  
 2. Validar las entradas:  
@@ -61,42 +74,6 @@ El proceso abarca desde la consulta de disponibilidad hasta el check-out, integr
    - Cambiar estado a "libre".  
    - Llamar nuevamente a `PrepararHabitación()`.  
 10. Fin del proceso.
-
----
-
-## Refinamiento - Nivel 1
-
-1. Validar datos de entrada del usuario.  
-   1.1. Fechas válidas y capacidad adecuada.  
-   1.2. Continuar solo si se cumplen las condiciones.
-
-2. Módulo 1: Consulta de disponibilidad  
-   - Entrada: fechas y cantidad de huéspedes.  
-   - Salida: lista de habitaciones disponibles.
-
-3. Módulo 2: Registro de reserva  
-   - Entrada: id de habitación y datos del huésped.  
-   - Si el huésped no existe → crear usuario.  
-   - Salida: id de reserva generado.
-
-4. Módulo 3: Confirmación de reserva  
-   - Entrada: id de reserva.  
-   - Llamar a `realizacionDelPago()`.  
-   - Si pago exitoso → actualizar estado a "confirmada".
-
-5. Módulo 4: Preparación de habitación  
-   - Validar reserva en estado "confirmada".  
-   - Ejecutar tareas de limpieza, reposición y validación.  
-   - Salida: habitación "preparada".
-
-6. Módulo 5: Check-in y atención al huésped  
-   - Validar habitación "preparada" y reserva "confirmada".  
-   - Cambiar estado de habitación a "ocupada".
-
-7. Módulo 6: Check-out  
-   - Validar habitación "ocupada" y reserva "confirmada".  
-   - Cambiar habitación a "libre" y reserva a "finalizada".  
-   - Invocar nuevamente a `PrepararHabitación()`.
 
 ---
 
