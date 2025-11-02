@@ -155,6 +155,7 @@ FIN PROCESO
 
 ## validaciones
 
+```
 FUNCIÓN VALIDAR_CONSULTA(fechas, capacidad) → booleano
 RETORNAR fechas.in < fechas.out
 Y DIFF_DIAS(fechas) ≤ 14
@@ -186,11 +187,12 @@ FUNCIÓN VALIDAR_CHECKOUT(reserva_id) → booleano
 RETORNAR ESTADO(reserva_id) = "confirmada"
 Y HABITACION_OCUPADA(reserva_id)
 
-
+```
 ---
 
 ## Pseudocódigo resumido de cada invocación (con validación interna defensiva)
 
+```
 PROCESO CONFIRMAR_RESERVA(reserva_id, datos_pago)
 SI NO VALIDAR_CONFIRMACION(reserva_id, datos_pago) ENTONCES
 IMPRIMIR "Precondiciones no satisfechas."
@@ -204,6 +206,7 @@ SINO
 IMPRIMIR "Pago no realizado. Reserva permanece 'pendiente'."
 FIN SI
 FIN PROCESO
+```
 
 
 
