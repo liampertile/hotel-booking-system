@@ -129,7 +129,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 			5.1.2.1 Si la tarea no está hecha
 				5.1.2.1.1 Establecer que no todas las tareas están hechas
 		5.1.3 Si todas las tareas están hechas
-			5.1.3.1 Ejecutar EstablecerHabitacionPreparada(habitaciónId)
+			5.1.3.1 Ejecutar EstablecerHabitacionPreparada(reserva_id)
 		5.1.4 Sino
 			5.1.4.1 Regresar al menú de realización de actividades.
 ```
@@ -138,16 +138,16 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 ```pseudo
 PROCESO PrepararHabitación(reserva_id):
 	ComprobarHabitación(reserva_id)
-    	ReestablecerEstado(reserva_id)
-    	AsignarTareas(reserva_id)
-    	GestionarTareas(reserva_id)
-    	VerificarValidación(reserva_id)
+	ReestablecerEstado(reserva_id)
+    AsignarTareas(reserva_id)
+    GestionarTareas(reserva_id)
+    VerificarValidación(reserva_id)
 FIN PROCESO
 
 PROCESO ComprobarHabitación(reserva_id):
 	ComprobarEstado(reserva_id)
 	ComprobarReserva(reserva_id)
-    	ComprobarOcupación(reserva_id)
+    ComprobarOcupación(reserva_id)
 FIN PROCESO
 
 PROCESO ComprobarEstado(hreserva_id):
@@ -200,7 +200,7 @@ PROCESO AsignarTareas(reserva_id):
     			persona <- listaPersonal[i]
 	    		tarea.estado <- "pendiente"
 	    		tarea.fecha_asignacion <- fecha_actual
-			tarea.staff_asignado <- persona.id
+				tarea.staff_asignado <- persona.id
     			persona.ocupado <- VERDADERO
 		FIN PARA
 	FIN SI
@@ -209,8 +209,8 @@ FIN PROCESO
 PROCESO GestionarTareas(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	IniciarTarea(habitacion.id)
-    	FinalizarTarea(habitacion.id)
-    	ValidarTarea(habitacion.id)
+    FinalizarTarea(habitacion.id)
+    ValidarTarea(habitacion.id)
 FIN PROCESO
 
 PROCESO VerificarValidación(reserva_id)
@@ -234,39 +234,39 @@ FIN PROCESO
 
 PROCESO EstablecerHabitaciónPreparada(reserva_id)
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
-    	habitacion.estado <- "preparada"
-    	habitacion.fecha_habitacion_habilitada <- fecha_actual
-    	imprimir("Habitación lista para check-in")
+	habitacion.estado <- "preparada"
+	habitacion.fecha_habitacion_habilitada <- fecha_actual
+    imprimir("Habitación lista para check-in")
 FIN PROCESO
 
-PROCESO IniciarTarea(habitacionId)
-    tarea <- seleccionarTarea(habitacionId, "pending")
+PROCESO IniciarTarea(tarea_id)
+    tarea <- seleccionarTarea(tarea_id, "pending")
     SI tarea /= NULL ENTONCES
         tarea.estado <- "inProgress"
         tarea.fecha_inicio <- fecha_actual
-        imprimir("Tarea " + tarea.id + " iniciada.")
+        imprimir("Tarea " + tarea.descripcion + " iniciada.")
     SINO
         imprimir("No hay tareas pendientes para iniciar.")
     FIN SI
 FIN PROCESO
 
-PROCESO FinalizarTarea(habitacionId)
-    tarea <- seleccionarTarea(habitacionId, "inProgress")
+PROCESO FinalizarTarea(tarea_id)
+    tarea <- seleccionarTarea(tarea_id, "inProgress")
     SI tarea ≠ NULL ENTONCES
         tarea.estado <- "finalizada"
         tarea.fecha_fin <- fecha_actual
-        imprimir("Tarea " + tarea.id + " finalizada.")
+        imprimir("Tarea " + tarea.descripcion + " finalizada.")
     SINO
         imprimir("No hay tareas en progreso para finalizar.")
     FIN SI
 FIN PROCESO
 
-PROCESO ValidarTarea(habitacionId)
-    tarea <- seleccionarTarea(habitacionId, "finished")
+PROCESO ValidarTarea(tarea_id)
+    tarea <- seleccionarTarea(tarea_id, "finished")
     SI tarea /= NULL ENTONCES
         tarea.fecha_validacion <- fecha_actual
-	tarea.validada <- leer(validacion)
-        imprimir("Tarea " + tarea.id + " validada correctamente.")
+		tarea.validada <- leer(validacion)
+        imprimir("Tarea " + tarea.descripcion + " validada correctamente.")
     SINO
         imprimir("No hay tareas finalizadas para validar.")
     FIN SI
