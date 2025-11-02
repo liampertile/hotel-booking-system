@@ -220,8 +220,8 @@ PROCESO VerificarValidación(reserva_id)
 
 	PARA cada tarea en habitación.tareas HACER
 		SI tarea.validada == "noValidada" O tarea.fecha_validacion > reserva.fecha_check_in ENTONCES
-            		todasValidadas <- FALSO
-            		imprimir("Tarea " + tarea.id + " no validada a tiempo.")
+				todasValidadas <- FALSO
+            	imprimir("Tarea " + tarea.id + " no validada a tiempo.")
 		FIN SI
 	FIN PARA
 	SI todasValidadas == VERDADERO ENTONCES
