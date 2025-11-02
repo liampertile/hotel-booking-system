@@ -14,15 +14,14 @@ El estado inicial de la reserva es **`pendiente`**.
 ---
 
 ### Reglas y validaciones
-- Los datos del huésped deben estar completos y válidos.  
+- Los datos del huésped deben estar completos y válidos.
+- Se registra el huésped si no existía.   
 - Al registrar la reserva, la habitación queda bloqueada para ese rango de fechas (por *X minutos*).
 
 ---
 
 ### Salida
 - **reserva_id**: número/código único generado.  
-- Se registra el huésped si no existía.  
-
 
 ---
 
