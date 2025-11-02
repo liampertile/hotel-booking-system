@@ -10,7 +10,6 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 
 ### Reglas y validaciones
 
-- La habitación debe existir y estar asociada a una reserva válida.
 - La **fecha de check-in** debe ser posterior a la fecha actual.
 - La habitación **no debe estar ocupada**.
 - Si la habitación ya se encuentra **en estado "preparada"**, no se vuelve a preparar.
