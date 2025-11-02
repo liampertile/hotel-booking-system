@@ -25,7 +25,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 - La habitación se marca como **`preparada`** solo cuando todas las tareas están validadas a tiempo.
 - Si alguna tarea no se valida antes del check-in, se retrasa el ingreso y se reabre la validación.
 
-### Salidas
+### Resultado
 
 - Habitación con estado **`preparada`** y lista para el ingreso del nuevo huésped.
 
