@@ -61,10 +61,8 @@ El estado inicial de la reserva es **`pendiente`**.
 ### Refinamiento - Nivel 2
 1. **Validar huésped**
    1.1. `huesped ← BUSCAR_HUESPED(documento)`  
-   1.2. Si `huesped = NULL` →  
-   `huesped_id ← CREAR_HUESPED(nombre, documento, email, telefono)`  
-   Sino →  
-   `huesped_id ← huesped.id`
+   1.2. Si `huesped = NULL` →    `huesped_id ← CREAR_HUESPED(nombre, documento, email, telefono)`  
+   1.3. Sino →  `huesped_id ← huesped.id`
 
 2. **Generar reserva**
    2.1. `reserva_id ← GENERAR_ID_RESERVA()`  
