@@ -66,7 +66,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
 ### Pseudocódigo
 
 ```pseudo
-PROCESO Modulo 1 (capacidad, fecha_check_in, fecha_check_out)
+PROCESO ConsultarDisponibilidad(capacidad, fecha_check_in, fecha_check_out)
 	//PASO 1: Cargar universo de habitaciones activas.
 	habitaciones <- obtenerHabitacionesActivas()
 	SI habitaciones ==  NULL ENTONCES
@@ -83,12 +83,11 @@ PROCESO Modulo 1 (capacidad, fecha_check_in, fecha_check_out)
 		FIN SI
 
 		reservasActivas <- listarReservas (hab.id, estados ∈ {"confirmada","pendiente"})
-
+// agregar while no solapa 
 		solapa <- FALSO
 		PARA CADA r EN reservasActivas HACER
 			SI (r.fecha_check_out ≥ fecha_check_in o r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
 				solapa <- VERDADERO
-				SALIR //cortar evaluación de reservas de esta habitación.
 			FIN SI
 		FIN PARA
 		SI NO solapa ENTONCES
