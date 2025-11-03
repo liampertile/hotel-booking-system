@@ -59,7 +59,7 @@ Se valida el estado y los datos requeridos.
    - Reiniciar tareas, asignar personal, ejecutar flujo de tareas y marcar `preparada`.  
 
 5. **Check-in**  
-   - Validar: reserva `confirmada`, habitación `preparada`, fecha actual ≥ `fecha_check_in`.  
+   - Validar: reserva `confirmada`, fecha actual ≥ `fecha_check_in`.  
    - Actualizar habitación → `ocupada`.  
 
 6. **Check-out**  
@@ -115,12 +115,12 @@ LEER opcion
             CONTINUAR
 
         CASO 5:  // Check-in
-            reserva_id, identificacion ← INPUT_CHECKIN()
-            SI NO VALIDAR_CHECKIN(reserva_id, identificacion) ENTONCES
+            reserva_id ← INPUT_CHECKIN()
+            SI NO VALIDAR_CHECKIN(reserva_id) ENTONCES
                 IMPRIMIR "Precondiciones de check-in no satisfechas."
                 CONTINUAR
             FIN SI
-            CHECK_IN(reserva_id, identificacion)
+            CHECK_IN(reserva_id)
             CONTINUAR
 
         CASO 6:  // Check-out
@@ -165,11 +165,10 @@ RETORNAR ESTADO(reserva_id) = "confirmada"
 Y HABITACION_NO_OCUPADA(reserva_id)
 Y PERSONAL_DISPONIBLE()
 
-FUNCIÓN VALIDAR_CHECKIN(reserva_id, identificacion) → booleano
+FUNCIÓN VALIDAR_CHECKIN(reserva_id) → booleano
 RETORNAR ESTADO(reserva_id) = "confirmada"
-Y HABITACION_PREPARADA(reserva_id)
 Y FECHA_ACTUAL ≥ FECHA_CHECK_IN(reserva_id)
-Y IDENTIDAD_COINCIDE(reserva_id, identificacion)
+
 
 FUNCIÓN VALIDAR_CHECKOUT(reserva_id) → booleano
 RETORNAR ESTADO(reserva_id) = "confirmada"
