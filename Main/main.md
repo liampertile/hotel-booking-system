@@ -67,7 +67,7 @@ El proceso abarca desde la consulta de disponibilidad hasta el check-out, integr
    - Validar estado "confirmada".  
    - Preparar y marcar habitación como "preparada".  
 8. Ejecutar el Módulo 5 (Check-in y atención al huésped).  
-   - Validar habitación "preparada" y reserva "confirmada".  
+   - Validar reserva "confirmada" y fecha actual ≥ fecha check-in.  
    - Cambiar estado a "ocupada".  
 9. Ejecutar el Módulo 6 (Check-out).  
    - Validar habitación "ocupada" y reserva "confirmada".  
@@ -102,7 +102,7 @@ El proceso abarca desde la consulta de disponibilidad hasta el check-out, integr
    - Marcar habitación "preparada".
 
 6. Check-in  
-   - Verificar estado de habitación = "preparada".  
+   - Verificar fecha actual ≥ fecha check-in.  
    - Verificar reserva = "confirmada".  
    - Cambiar estado habitación → "ocupada".
 
@@ -142,7 +142,7 @@ SI ESTADO_RESERVA(reserva_id) = "confirmada" ENTONCES
 FIN SI
 
 // Módulo 5: Check-in
-SI HABITACION_PREPARADA(reserva_id) Y RESERVA_CONFIRMADA(reserva_id)
+SI FechaActual ≥ FechaCheck-in Y RESERVA_CONFIRMADA(reserva_id)
     ACTUALIZAR_HABITACION(reserva_id, "ocupada")
 FIN SI
 
