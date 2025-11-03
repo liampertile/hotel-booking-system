@@ -24,111 +24,94 @@ El estado inicial de la reserva es **`pendiente`**.
 ---
 
 ### Algoritmo
-1. Validar fechas, cantidad de huéspedes y formato de datos.  
-2. Verificar disponibilidad actual de la habitación (sin solapamientos).  
-3. Validar existencia de la habitación y su capacidad.  
-4. Crear registro de huésped (si no existe).  
-5. Crear nueva reserva en estado `"pendiente"`.  
-6. Asociar habitación a la reserva.  
-7. Devolver ID de reserva y estado.
+1. Verificar existencia del huésped.  
+2. Si el huésped no existe, crear registro nuevo en la base de datos.
+3. Generar un nuevo reserva_id. 
+4. Crear registro de reserva con: habitacion_id,huesped_id, estado = "pendiente"  
+5. Bloquear temporalmente la habitación en el rango de fechas asociado. Crear nueva reserva en estado `"pendiente"`. 
+6. Devolver reserva_id y estado "pendiente". 
 
 ---
 
 ### Refinamiento - Nivel 1
-1. **Validar entradas:**
-   1.1 fecha_check_in < fecha_check_out 
-   1.2 Diferencia de días ≤ 14  
-   1.3 Cantidad de huéspedes ≥ 1  
-   1.4 Datos del huésped no vacíos  
-2. **Verificar habitación:**
-   2.1 Existe  
-   2.2 capacidad ≥ cantidad de huéspedes  
-   2.3 No tiene reservas activas solapadas  
-3. **Registrar huésped si no existe**  
-4. **Crear reserva:**
-   4.1 Guardar fecha_check_in, fecha_check_out, estado = `"pendiente"`  
-   4.2 Asignar huesped_id y habitacion_id  
-5. **Calcular y mostrar monto estimado**
+1. **Comprobar huésped**
+   1.1. Buscar huésped por documento.  
+   1.2. Si no existe → crear nuevo registro.  
+   1.3. Obtener `huesped_id`.
+
+2. **Registrar reserva**
+   2.1. Generar `reserva_id` único.  
+   2.2. Asignar `habitacion_id` y `huesped_id`.  
+   2.3. Establecer `estado = "pendiente"`.  
+   2.4. Guardar en la lista de reservas activas.
+
+3. **Bloquear habitación**
+   3.1. Marcar habitación como “bloqueada” por X minutos.
+
+4. **Devolver resultados**
+   4.1. Mostrar número de reserva y estado inicial.
+
 
 ---
 
 ### Refinamiento - Nivel 2
-1. **Validar fechas**
-   - Si fecha_check_in ≥ fecha_check_out → Error  
-   - Si noches > 14 → Error  
-   - Si cantidad huéspedes < 1 → Error  
+1. **Validar huésped**
+   1.1. `huesped ← BUSCAR_HUESPED(documento)`  
+   1.2. Si `huesped = NULL` →  
+   `huesped_id ← CREAR_HUESPED(nombre, documento, email, telefono)`  
+   Sino →  
+   `huesped_id ← huesped.id`
 
-2. **Validar habitación**
-   - Buscar habitación por habitacion_id  
-   - Si no existe → Error  
-   - Si capacidad < cantidad_huespedes → Error  
-   - Buscar en reservas activas si hay solapamiento → Si hay → Error  
+2. **Generar reserva**
+   2.1. `reserva_id ← GENERAR_ID_RESERVA()`  
+   2.2. `estado ← "pendiente"`  
+   2.3. `CREAR_RESERVA(reserva_id, habitacion_id, huesped_id, estado)`
 
-3. **Validar huésped**
-   - Verificar que nombre, documento, email, teléfono ≠ vacío  
-   - Si huésped con mismo documento ya existe → reutilizar huesped_id  
+3. **Bloquear habitación**
+   3.1. `BLOQUEAR_HABITACION(habitacion_id, tiempo = 15 MINUTOS)`
 
-4. **Registrar reserva**
-   - Crear objeto reserva con:
-     - ID generado  
-     - Estado = `"pendiente"`  
-     - Fechas  
-     - Habitación y huésped vinculados  
-   - Agregar a la lista de reservas activas  
+4. **Salida**
+   4.1. Mostrar mensaje:  
+   “Reserva creada correctamente.”  
+   “Número de reserva: ” + reserva_id  
+   “Estado inicial: pendiente.”
 
-5. **Salida**
-   - Mostrar: ID de reserva, estado = `"pendiente"`, monto estimado  
-   - La habitación queda bloqueada temporalmente  
 
 ---
 
 ### Pseudocódigo
 ```pseudo
-INICIO REGISTRAR_RESERVA 
-LEER habitacion_id, fecha_check_in, fecha_check_out, cantidad_huespedes 
-LEER nombre, documento, email, telefono 
-// Validar fechas 
-SI fecha_check_in ≥ fecha_check_out ENTONCES 
-  MOSTRAR "Error: Fechas inválidas" 
-  TERMINAR 
-FIN SI 
-SI DIAS_ENTRE(fecha_check_in, fecha_check_out) > 14 ENTONCES 
-  MOSTRAR "Error: Máximo 14 noches permitidas" 
-  TERMINAR 
-FIN SI 
-// Validar habitación 
-habitacion ← BUSCAR_HABITACION(habitacion_id) 
-SI habitacion = NULO ENTONCES 
-  MOSTRAR "Error: Habitación inexistente" 
-  TERMINAR 
-FIN SI 
-SI habitacion.capacidad < cantidad_huespedes ENTONCES 
-  MOSTRAR "Error: Capacidad insuficiente" 
-  TERMINAR 
-FIN SI
+INICIO MODULO RegistroDeReserva
 
-SI EXISTE_SOLAPAMIENTO(habitacion_id, fecha_check_in, fecha_check_out) 
-ENTONCES 
-  MOSTRAR "Error: Habitación no disponible en ese rango" 
-  TERMINAR 
-FIN SI 
-// Verificar o crear huésped 
-huesped ← BUSCAR_HUESPED(documento) 
-SI huesped = NULO ENTONCES 
-huesped ← CREAR_HUESPED(nombre, documento, email, telefono) 
-FIN SI 
-// Crear reserva 
-reserva_id ← GENERAR_ID_UNICO() 
-reserva ← { 
-  id: reserva_id, 
-  huesped_id: huesped.id, 
-  habitacion_id: habitacion.id, 
-  fecha_check_in: fecha_check_in, 
-  fecha_check_out: fecha_check_out, 
-  estado: "pendiente" 
-} 
-AGREGAR_A_LISTA_RESERVAS(reserva) 
-// Calcular monto estimado 
-monto ← CALCULAR_MONTO(habitacion.tarifa, fecha_check_in, fecha_check_out, 
-cantidad_huespedes) 
-// Salida
+    // Entradas
+    LEER habitacion_id
+    LEER huesped.nombre
+    LEER huesped.documento
+    LEER huesped.email
+    LEER huesped.telefono
+
+    // 1. Validar / Registrar huésped
+    huesped_existente ← BUSCAR_HUESPED_POR_DOCUMENTO(huesped.documento)
+
+    SI huesped_existente = NULO ENTONCES
+        huesped_id ← CREAR_HUESPED(huesped.nombre, huesped.documento,
+                                   huesped.email, huesped.telefono)
+    SINO
+        huesped_id ← huesped_existente.id
+    FIN SI
+
+    // 2. Crear nueva reserva
+    reserva_id ← GENERAR_ID_RESERVA()
+    estado ← "pendiente"
+    CREAR_RESERVA(reserva_id, habitacion_id, huesped_id, estado)
+
+    // 3. Bloquear temporalmente la habitación
+    BLOQUEAR_HABITACION(habitacion_id, tiempo_bloqueo = 15 MINUTOS)
+
+    // 4. Salida
+    MOSTRAR "Reserva registrada exitosamente."
+    MOSTRAR "Número de reserva: ", reserva_id
+    MOSTRAR "Estado: pendiente"
+    MOSTRAR "La habitación ha sido bloqueada temporalmente."
+
+FIN MODULO
