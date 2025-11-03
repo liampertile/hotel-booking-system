@@ -136,7 +136,7 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 
 ```pseudo
 PROCESO PrepararHabitación(reserva_id):
-	ComprobarHabitación(reserva_id)
+	ComprobarHabitación(reserva_id) //EN EL MAIN
 	ReestablecerEstado(reserva_id)
     AsignarTareas(reserva_id)
     GestionarTareas(reserva_id)
@@ -149,7 +149,7 @@ PROCESO ComprobarHabitación(reserva_id):
     ComprobarOcupación(reserva_id)
 FIN PROCESO
 
-PROCESO ComprobarEstado(hreserva_id):
+PROCESO ComprobarEstado(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	SI habitacion.estado == "preparada"
 		imprimir("La habitación ya se encuentra preparada, no se preparará nuevamente")
@@ -191,7 +191,7 @@ PROCESO AsignarTareas(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	listaDeTareas <- habitacion.tareas
 	listaDePersonal <- obtenerPersonasDeLimpiezaDisponibles()
-	SI longitud(listaDePersonal) < longitud(listaDeTareas) ENTONCES
+	SI longitud(listaDePersonal) < longitud(listaDeTareas) ENTONCES //UNA PERSONA TIENE ASIGNADA UNA LISTA DE TAREAS POR HABITACIÒN
 		imprimir("No hay personal suficiente para realizar todas las tareas")
 	SINO
 		PARA i DESDE 0 HASTA minimo(longitud(listaDePersonal), longitud(listaDeTareas)):
@@ -207,9 +207,9 @@ FIN PROCESO
 	
 PROCESO GestionarTareas(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
-	IniciarTarea(habitacion.id)
-    FinalizarTarea(habitacion.id)
-    ValidarTarea(habitacion.id)
+	IniciarTarea(tarea_id)
+    FinalizarTarea(tarea_id)
+    ValidarTarea(tarea_id)
 FIN PROCESO
 
 PROCESO VerificarValidación(reserva_id)
