@@ -43,16 +43,16 @@ El estado inicial de la reserva es **`pendiente`**.
    1.2. Si no existe → crear nuevo registro.  
    1.3. Obtener `huesped_id`.
 
-2. **Registrar reserva**
+3. **Registrar reserva**
    2.1. Generar `reserva_id` único.  
    2.2. Asignar `habitacion_id` y `huesped_id`.  
    2.3. Establecer `estado = "pendiente"`.  
    2.4. Guardar en la lista de reservas activas.
 
-3. **Bloquear habitación**
+4. **Bloquear habitación**
    3.1. Marcar habitación como “bloqueada” por X minutos.
 
-4. **Devolver resultados**
+5. **Devolver resultados**
    4.1. Mostrar número de reserva y estado inicial.
 
 
