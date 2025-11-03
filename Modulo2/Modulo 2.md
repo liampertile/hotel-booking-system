@@ -25,11 +25,15 @@ El estado inicial de la reserva es **`pendiente`**.
 
 ### Algoritmo
 1. Verificar existencia del huésped.  
-2. Si el huésped no existe, crear registro nuevo en la base de datos.
-3. Generar un nuevo reserva_id. 
-4. Crear registro de reserva con: habitacion_id,huesped_id, estado = "pendiente"  
-5. Bloquear temporalmente la habitación en el rango de fechas asociado. Crear nueva reserva en estado `"pendiente"`. 
-6. Devolver reserva_id y estado "pendiente". 
+2. Si el huésped no existe, crear registro nuevo en la base de datos.  
+3. Generar un nuevo `reserva_id`.  
+4. Crear registro de reserva con:  
+   - `habitacion_id`  
+   - `huesped_id`  
+   - `estado = "pendiente"`  
+5. Bloquear temporalmente la habitación en el rango de fechas asociado.  
+6. Devolver `reserva_id` y estado `"pendiente"`.  
+
 
 ---
 
