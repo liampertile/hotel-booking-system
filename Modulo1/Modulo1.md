@@ -85,11 +85,14 @@ PROCESO ConsultarDisponibilidad(capacidad, fecha_check_in, fecha_check_out)
 		reservasActivas <- listarReservas (hab.id, estados ∈ {"confirmada","pendiente"})
 // agregar while no solapa 
 		solapa <- FALSO
-		PARA CADA r EN reservasActivas HACER
+		i <- 0
+		n <- LONGITUD (reservasActivas)
+		MIENTRAS (NO solapa) y (i < n) HACER
 			SI (r.fecha_check_out ≥ fecha_check_in o r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
-				solapa <- VERDADERO
+				solapa <- VERDADERO  //Con encontrar una única reserva solapada, ya salimos.
 			FIN SI
-		FIN PARA
+			i<-i+1
+		FIN MIENTRAS
 		SI NO solapa ENTONCES
 			(agregar(disponibles, hab)
 		FIN SI
