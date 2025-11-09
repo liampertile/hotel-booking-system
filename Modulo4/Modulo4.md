@@ -137,34 +137,41 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 ```pseudo
 PROCESO PrepararHabitación(reserva_id):
 	ComprobarHabitación(reserva_id) //EN EL MAIN
-	ReestablecerEstado(reserva_id)
+	<!-- ReestablecerEstado(reserva_id) // YA NO VA A SERVIR ESTE PROCESO -->
+	CrearTareas(reserva_id)
     AsignarTareas(reserva_id)
     GestionarTareas(reserva_id)
     VerificarValidación(reserva_id)
 FIN PROCESO
 
 PROCESO ComprobarHabitación(reserva_id):
-	ComprobarEstado(reserva_id)
-	ComprobarReserva(reserva_id)
-    ComprobarOcupación(reserva_id)
+	ComprobarEstado(reserva_id) 
+	ComprobarReserva(reserva_id) // CREO QUE NO VA A HACER FALTA PORQUE POST CHECKOUT SE LIMPIA LA HABITACIÓN Y QUIZAS NO HAY RESERVA
+    ComprobarOcupación(reserva_id) // NO VA A HACER FALTA, PORQUE "ocupado" TAMBIÉN SE MANEJA POR ESTADO
 FIN PROCESO
 
 PROCESO ComprobarEstado(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
-	SI habitacion.estado == "preparada"
-		imprimir("La habitación ya se encuentra preparada, no se preparará nuevamente")
+	SI habitacion es VACIO
+		imprimir("La habitación no existe.")
 	SINO
-		imprimir("La habitación no se encuentra preparada")
-	FIN SI
+		SI habitacion.estado == "libre"
+			imprimir("La habitación se encuentra libre")
+		SINO
+			imprimir("La habitación no puede ser preparada")
+		FIN SI
 FIN PROCESO
 
 PROCESO ComprobarReserva(reserva_id):
 	reserva <- obtenerReservaPorId(reserva_id)
-	SI reserva.fecha_check_in > fecha_actual Y reserva.estado == "confirmada" ENTONCES
-		imprimir("La habitación tiene una próxima reserva")
+	SI reserva es VACIO
+		imprimir("La reserva no existe.")
 	SINO
-		imprimir("La habitación no tiene una próxima reserva")
-	FIN SI
+		SI reserva.fecha_check_in > fecha_actual Y reserva.estado == "confirmada" ENTONCES
+			imprimir("La habitación tiene una próxima reserva")
+		SINO
+			imprimir("La habitación no tiene una próxima reserva")
+		FIN SI
 FIN PROCESO
 
 PROCESO ComprobarOcupacion(reserva_id):
@@ -176,6 +183,7 @@ PROCESO ComprobarOcupacion(reserva_id):
 	FIN SI
 FIN PROCESO
 
+<!-- YA NO VA A SERVIR ESTE PROCESO -->
 PROCESO ReestablecerEstado(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	listaDeTareas <- habitacion.tareas
@@ -186,8 +194,16 @@ PROCESO ReestablecerEstado(reserva_id):
 	habitacion.estado <- "libre"
 	habitacion.tareas <- listaDeTareas
 FIN PROCESO
+<!-- YA NO VA A SERVIR ESTE PROCESO -->
 
-PROCESO AsignarTareas(reserva_id):
+PROCESO CrearTareas(reserva_id):
+	TAREAS = ["limpieza", "reposición", "mantenimiento"]
+	para cada tarea en TAREAS:
+		crearTarea(reserva_id)
+	imprimir("Tareas creadas exitosamente para la reserva")
+FIN PROCESO
+
+PROCESO AsignarTareas(reserva_id): //ELIJO 1 PERSONAL LIBRE Y LE ASIGNO TODAS LAS TAREAS
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	listaDeTareas <- habitacion.tareas
 	listaDePersonal <- obtenerPersonasDeLimpiezaDisponibles()
@@ -209,7 +225,7 @@ PROCESO GestionarTareas(reserva_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	IniciarTarea(tarea_id)
     FinalizarTarea(tarea_id)
-    ValidarTarea(tarea_id)
+    ValidarTarea(tarea_id) // DEBE ESTAR POR SEPARADO EN OTRO MENÚ
 FIN PROCESO
 
 PROCESO VerificarValidación(reserva_id)
