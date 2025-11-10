@@ -1,17 +1,17 @@
-# from shared.obtenerHabitacionByReservaId import obtenerHabitacionPorReservaId
-# from Modulo4.ComprobarHabitacion.ComprobarEstado import comprobarEstado
-# from Modulo4.ComprobarHabitacion.ComprobarOcupacion import comprobarOcupacion
-# from Modulo4.ComprobarHabitacion.ComprobarReserva import comprobarReserva
-# from Modulo4.Tareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 import sys
 from shared.validarExisteReservaPorId import validarExisteReservaPorId
 from Modulo4.ComprobarHabitacion.ComprobarHabitacion import comprobarHabitacion
-from Modulo4.Tareas.CrearTareas import crearTareas
-from Modulo4.Tareas.AsignarTareas import asignarTareas
+from Modulo4.Tareas.GestionarTareas.CrearTareas import crearTareas
+from Modulo4.Tareas.GestionarTareas.AsignarTareas import asignarTareas
 from Modulo4.Tareas.GestionarTareas.Step1 import step1
+from Modulo4.Tareas.ValidacionDeInputs.ValidacionCrearTareas import validacionCrearTareas
 from Modulo4.ValidacionDeLaHabitacion.VerificarValidacion import verificarValidacion
+from Modulo4.Tareas.ValidacionDeInputs.ValidacionTareasCreadasPendientes import validacionTareasCreadasPendientes
 
 def prepararHabitacion(reserva_id: int, admin_id: int):
+    habitacionComprobada: bool = False
+    tareasCreadas: bool = False
+    tareasAsignadas: bool = False
     try:
         while True:
             print(f"\n|---------| PREPARAR HABITACIÓN PARA RESERVA {reserva_id} |---------|\n")
@@ -22,7 +22,9 @@ def prepararHabitacion(reserva_id: int, admin_id: int):
             print("5. Verificar validación")
             print("0. Salir\n")
             print("|-------------------------------------------------------|\n\n")
+            
             opcion = input("Opción: ")
+            
             if opcion == '0':
                 print("Saliendo del proceso de preparar habitación.")
                 return
@@ -34,25 +36,38 @@ def prepararHabitacion(reserva_id: int, admin_id: int):
                 else:
                     match opcion:
                         case '1':
-                            hecho = comprobarHabitacion(reserva_id)
-                            if hecho:
-                                print("Habitación comprobada correctamente.")
+                            habitacionComprobada = comprobarHabitacion(reserva_id)
+                            if habitacionComprobada:
+                                print("La habitación fue comprobada correctamente, se deben crear las tareas.")
                             else:
-                                print("No se pudo comprobar la habitación.")
+                                print("La habitación no puede ser preparada.")
                         case '2':
-                            hecho = crearTareas(reserva_id)
-                            if hecho:
-                                print("Tareas creadas correctamente.")
+                            if not habitacionComprobada:
+                                print("Primero debe comprobar la habitación antes de crear las tareas.")
+                                continue
                             else:
-                                print("No se pudieron crear las tareas.")
+                                tareasValidadas = validacionCrearTareas(reserva_id)
+                                if not tareasValidadas:
+                                    print("No se pueden crear nuevas tareas para esta reserva hasta que no se finalicen o validen las tareas existentes.")
+                                else:
+                                    tareasCreadas = crearTareas(reserva_id)
+                                    if tareasCreadas:
+                                        print(f"Tareas creadas exitosamente para la reserva {reserva_id}")
+                                    else:
+                                        print("No se pudieron crear las tareas.")
                         case '3':
-                            hecho = asignarTareas(reserva_id)
-                            if hecho:
-                                print("Tareas asignadas correctamente.")
+                            tareasCreadas = validacionTareasCreadasPendientes(reserva_id)
+                            if not tareasCreadas:
+                                print("Primero debe crear las tareas antes de asignarlas.")
+                                continue
                             else:
-                                print("No se pudieron asignar las tareas.")
+                                tareasAsignadas = asignarTareas(reserva_id)
+                                if tareasAsignadas:
+                                    print("Tareas asignadas correctamente.")
+                                else:
+                                    print("No se pudieron asignar las tareas.")
                         case '4':
-                            step1(reserva_id, admin_id)
+                                step1(reserva_id, admin_id)
                         case '5':
                             hecho = verificarValidacion(reserva_id)
                             if hecho:
