@@ -9,20 +9,24 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from modulo1 import consultar_disponibilidad
 from modulo2 import registrar_reserva_db, crear_cliente, buscar_cliente_por_dni
 from modulo3 import confirmar_reserva
-from shared.mysql_connection import select  # Para verificar tarifas
+from Modulo4.modulo4 import prepararHabitacion
+from Modulo5.Modulo5 import check_in
+from shared.mysql_connection import select
+
 
 def menu():
     while True:
         print("\n" + "=" * 40)
         print("       SISTEMA DE GESTIÓN HOTELERA")
         print("=" * 40)
-        print("1. Consultar disponibilidad (Módulo 1)")
-        print("2. Registrar reserva (Módulo 2)")
-        print("3. Confirmar reserva (Módulo 3)")
-        print("4. Salir")
+        print("1. Consultar disponibilidad y registrar reserva")
+        print("2. Confirmar reserva")
+        print("3. Preparar habitación (Módulo 4)")
+        print("4. Check-in (Módulo 5)")
+        print("5. Salir")
         print("=" * 40)
 
-        opcion = input("Seleccione una opción (1-4): ")
+        opcion = input("Seleccione una opción (1-5): ")
 
         if opcion == "1":
             try:
@@ -91,19 +95,37 @@ def menu():
                 print("Error inesperado al consultar disponibilidad:", e)
 
         elif opcion == "2":
-            print("\nPara registrar una reserva, utilice la opción 1 para consultar disponibilidad y encadenar el flujo.")
-
-        elif opcion == "3":
             try:
                 reserva_id = int(input("Ingrese el ID de la reserva a confirmar: "))
                 confirmar_reserva(reserva_id)
             except ValueError:
                 print("Debe ingresar un número entero.")
+
+        elif opcion == "3":
+            try:
+                reserva_id = int(input("Ingrese el ID de la reserva a preparar: "))
+                admin_id = int(input("Ingrese su ID de administrador: "))
+                prepararHabitacion(reserva_id, admin_id)
+            except ValueError:
+                print("Los IDs deben ser enteros.")
+            except Exception as e:
+                print("Error al preparar habitación:", e)
+
         elif opcion == "4":
+            try:
+                reserva_id = int(input("Ingrese el ID de la reserva para check-in: "))
+                check_in(reserva_id)
+            except ValueError:
+                print("El ID de la reserva debe ser un número entero.")
+            except Exception as e:
+                print("Error al realizar el check-in:", e)
+
+        elif opcion == "5":
             print("Gracias por utilizar el sistema. ¡Hasta luego!")
             break
+
         else:
-            print("Opción inválida. Por favor seleccione entre 1 y 4.")
+            print("Opción inválida. Por favor seleccione entre 1 y 5.")
 
 if __name__ == "__main__":
     menu()

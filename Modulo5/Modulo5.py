@@ -12,7 +12,7 @@ if ruta_raiz_proyecto not in sys.path:
 # Ahora las importaciones de módulos del proyecto funcionarán
 from shared.mysql_connection import commit
 from shared.obtenerHabitacionByReservaId import obtenerHabitacionPorReservaId
-from Modulo4.Tareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
+from Modulo4.Tareas.GestionarTareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 
 
 def check_in(reserva_id: int):
