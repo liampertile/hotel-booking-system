@@ -16,7 +16,7 @@ def validacionValidarTarea(tarea_id: str, admin_id: int) -> bool:
     )
     
     if not row:
-        print(f"La tarea {tarea_id} en estado 'finalizada' no existe.")
+        print(f"La tarea {tarea_id} debe estar en estado 'finalizada' para ser validada.")
         return False
     else:
         return True
