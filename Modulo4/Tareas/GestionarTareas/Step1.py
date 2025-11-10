@@ -1,4 +1,4 @@
-from Modulo4.Tareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
+from Modulo4.Tareas.GestionarTareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 from Modulo4.Tareas.GestionarTareas.Step2 import step2
 
 def step1(reserva_id: int, admin_id: int = 2):
@@ -11,7 +11,7 @@ def step1(reserva_id: int, admin_id: int = 2):
             else:
                 print("\n|-------| Tareas asociadas a la reserva |-------|\n")
                 for tarea in tareas:
-                    print(f"    TAREA {tarea['id']}: {tarea['descripcion']} - Estado: {tarea['estado']}")
+                    print(f"    TAREA {tarea['id']}: {tarea['descripcion']} - Estado: {tarea['estado']} - Validada: {tarea['validada']}")
                 print("\n|-----------------------------------------------|\n\n")
                 ingreso = input("Seleccione la tarea que desea gestionar ingresando su ID o 'q' para salir: ")
                 if ingreso.lower() == 'q':

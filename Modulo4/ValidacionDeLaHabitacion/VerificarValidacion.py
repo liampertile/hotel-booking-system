@@ -1,4 +1,4 @@
-from Modulo4.Tareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
+from Modulo4.Tareas.GestionarTareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 from Modulo4.ValidacionDeLaHabitacion.EstablecerHabitacionPreparada import establecerHabitacionPreparada
 from Modulo4.Tareas.ReestablecerEstadoStaff import reestablecerEstadoStaff 
 from shared.obtenerReservaPorId import obtenerReservaPorId
@@ -11,15 +11,17 @@ def verificarValidacion(reserva_id: int):
         return False
     else:
         for tarea in tareas:
-            if tarea['validada'] == 'noValidada' or tarea['fecha_validacion'] > reserva['fecha_check_in']:
+            # if tarea['validada'] == 'noValidada' or tarea['fecha_validacion'] > reserva['fecha_check_in']:
+            if tarea['validada'] == 'noValidada':
+                print(f"La tarea {tarea['id']} no ha sido validada aún, no se puede validar la habitación.")
                 return False
             else:
                 continue
         hecho = establecerHabitacionPreparada(reserva['habitacion_id'])
         if hecho:
             print(f"Todas las tareas de la reserva {reserva_id} han sido validadas. Habitación marcada como preparada.")
-            hecho = reestablecerEstadoStaff(reserva_id)
-            return hecho
+            staffValidado = reestablecerEstadoStaff(reserva_id)
+            return staffValidado
         else:
             print(f"No se pudo marcar la habitación de la reserva {reserva_id} como preparada.")
             return False

@@ -5,12 +5,13 @@ def reestablecerEstadoStaff(tarea_id: int):
         "SELECT staff_asignado_id FROM Tarea WHERE id = %s LIMIT 1",
         (tarea_id,)
     )
-    if staff_asignado_id:
+    print(staff_asignado_id[0][0])
+    if staff_asignado_id[0][0]:
         commit(
             "UPDATE Persona SET ocupado = 0 WHERE id = %s and tipo = 'limpieza'",
-            (staff_asignado_id[0],)
+            (staff_asignado_id[0][0],)
         )
-        print(f"Estado del staff con ID {staff_asignado_id[0]} reestablecido a disponible.")
+        print(f"EL staff con ID {staff_asignado_id[0][0]} ya no se encuentra ocupado.")
         return True
     else:
         print(f"No se encontró staff asignado para la tarea {tarea_id}.")
