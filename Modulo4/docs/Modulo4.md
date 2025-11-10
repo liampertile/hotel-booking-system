@@ -135,12 +135,12 @@ En este módulo se trabaja la preparación de la habitación, previa al check-in
 ### Pseudocódigo
 
 ```pseudo
-PROCESO PrepararHabitación(reserva_id):
+PROCESO PrepararHabitación(reserva_id, admin_id):
 	ComprobarHabitación(reserva_id) //EN EL MAIN
 	<!-- ReestablecerEstado(reserva_id) // YA NO VA A SERVIR ESTE PROCESO -->
 	CrearTareas(reserva_id)
     AsignarTareas(reserva_id)
-    GestionarTareas(reserva_id)
+    GestionarTareas(reserva_id, admin_id)
     VerificarValidación(reserva_id)
 FIN PROCESO
 
@@ -221,16 +221,16 @@ PROCESO AsignarTareas(reserva_id): //ELIJO 1 PERSONAL LIBRE Y LE ASIGNO TODAS LA
 	FIN SI
 FIN PROCESO
 	
-PROCESO GestionarTareas(reserva_id):
+PROCESO GestionarTareas(reserva_id, admin_id):
 	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
 	IniciarTarea(tarea_id)
     FinalizarTarea(tarea_id)
-    ValidarTarea(tarea_id) // DEBE ESTAR POR SEPARADO EN OTRO MENÚ
+    ValidarTarea(tarea_id, admin_id)
 FIN PROCESO
 
 PROCESO VerificarValidación(reserva_id)
 	todasValidadas <- VERDADERO
-	habitacion <- obtenerHabitacionPorReservaId(reserva_id)
+	habitacion <- obtenerHabitacionPorReservaId(reserva_id) // NO HACE FALTA
 	reserva <- obtenerReservaPorId(reserva_id)
 
 	PARA cada tarea en habitación.tareas HACER
