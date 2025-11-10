@@ -1,4 +1,4 @@
-from Main.mysql_connection import select
+from shared.mysql_connection import select
 from typing import Optional, Dict, Any
 
 def obtenerReservaPorId(reserva_id: int) -> Optional[Dict[str, Any]]:

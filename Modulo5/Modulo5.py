@@ -1,6 +1,6 @@
 import sys
 from os.path import abspath, dirname
-from Main.mysql_connection import select, commit
+from shared.mysql_connection import select, commit
 
 from typing import List, Dict, Any
 

@@ -1,5 +1,5 @@
 from random import random
-from mysql_connection  import select, commit
+from shared.mysql_connection  import select, commit
 
 
 def realizacion_del_pago():

@@ -1,4 +1,4 @@
-from Main.mysql_connection import select
+from shared.mysql_connection import select
 from typing import Optional, Dict, Any
 
 def obtenerHabitacionPorReservaId(reserva_id: int) -> Optional[Dict[str, Any]]:
@@ -12,6 +12,7 @@ def obtenerHabitacionPorReservaId(reserva_id: int) -> Optional[Dict[str, Any]]:
     )
     
     if not rows:
+        print("No se encontró la reserva.")
         return None
     
     id_, capacidad, tarifa, estado, fecha_habilitada = rows[0]

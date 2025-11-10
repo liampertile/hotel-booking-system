@@ -55,7 +55,7 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
             2.1.1.2 En caso contrario, continuar con la siguiente habitación. 
         2.1.2 Buscar reservas activas (confirmado 𝑜 pendiente) que se solapen con el rango solicitado. 
             2.1.2.1 Para cada reserva activa en la habitación: 
-            2.1.2.2 Si la fecha de fecha_check_in de la reserva es mayor o igual a la ingresada por el usuario, o la fecha de fecha_check_out es menor o igual a la ingresada por el usuario: 
+            2.1.2.2 Si la fecha de fecha_check_in de la reserva es mayor o igual a la ingresada por el usuario, y la fecha de fecha_check_out es menor o igual a la ingresada por el usuario: 
                 2.1.2.2.1 Establecer solapamiento como verdadero. 
                 2.1.2.2.2 Continuar con la siguiente habitación. 
         2.1.3 Si no hay solapamiento, añadir la habitación a la lista de habitaciones  disponibles. 
@@ -85,14 +85,11 @@ PROCESO ConsultarDisponibilidad(capacidad, fecha_check_in, fecha_check_out)
 		reservasActivas <- listarReservas (hab.id, estados ∈ {"confirmada","pendiente"})
 // agregar while no solapa 
 		solapa <- FALSO
-		i <- 0
-		n <- LONGITUD (reservasActivas)
-		MIENTRAS (NO solapa) y (i < n) HACER
-			SI (r.fecha_check_out ≥ fecha_check_in o r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
-				solapa <- VERDADERO  //Con encontrar una única reserva solapada, ya salimos.
+		PARA CADA r EN reservasActivas HACER
+			SI (r.fecha_check_out ≥ fecha_check_in y r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
+				solapa <- VERDADERO
 			FIN SI
-			i<-i+1
-		FIN MIENTRAS
+		FIN PARA
 		SI NO solapa ENTONCES
 			(agregar(disponibles, hab)
 		FIN SI
