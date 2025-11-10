@@ -1,75 +1,51 @@
 import sys
-from os.path import abspath, dirname
-from shared.mysql_connection import select, commit
+import os
 
-from typing import List, Dict, Any
+# --- Configuración del Path del Proyecto ---
+# Esto agrega la carpeta raíz 'hotel-booking-system' al path de Python
+# para que podamos importar 'shared' y 'Modulo4' correctamente.
+ruta_raiz_proyecto = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if ruta_raiz_proyecto not in sys.path:
+    sys.path.append(ruta_raiz_proyecto)
+# --- Fin Configuración del Path ---
 
-def _obtener_habitacion_y_tareas(reserva_id: int) -> Dict[str, Any]:
-    """
-    Función interna para obtener la habitación y sus tareas asociadas 
-    a través de la reserva.
-    """
-    # Obtenemos la habitación primero
-    habitacion_rows = select(
-       "SELECT h.id, h.estado "
-       "FROM Habitacion AS h "
-       "JOIN Reserva r ON h.id = r.habitacion_id "
-       "WHERE r.id = %s "
-       "LIMIT 1",
-       (reserva_id,)
-    )
-    
-    if not habitacion_rows:
-        return None  # No se encontró habitación para esa reserva
+# Ahora las importaciones de módulos del proyecto funcionarán
+from shared.mysql_connection import commit
+from shared.obtenerHabitacionByReservaId import obtenerHabitacionPorReservaId
+from Modulo4.Tareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 
-    habitacion_id, habitacion_estado = habitacion_rows[0]
-    
-    # Obtenemos las tareas de esa reserva
-    tarea_rows = select(
-        "SELECT id, estado FROM Tarea WHERE reserva_id = %s",
-        (reserva_id,)
-    )
-    
-    tareas = []
-    for tarea_row in tarea_rows:
-        tareas.append({"id": tarea_row[0], "estado": tarea_row[1]})
-        
-    return {
-        "id": habitacion_id,
-        "estado": habitacion_estado,
-        "tareas": tareas
-    }
 
 def check_in(reserva_id: int):
     """
     Realiza el check-in de una reserva, actualizando el estado de la habitación.
     
-    Asume que la reserva ya fue validada (confirmada, fecha OK) por el módulo MAIN.
+    Asume que la reserva ya fue validada (confirmada, fecha OK) 
+    por un módulo principal (MAIN) antes de llamar a esta función.
     """
     try:
-        # 1. Obtener la habitación y sus tareas
-        datos = _obtener_habitacion_y_tareas(reserva_id)
+        # 1. Obtener la habitación y sus tareas usando funciones compartidas
+        habitacion = obtenerHabitacionPorReservaId(reserva_id)
         
-        if not datos:
-            print(f"Error: No se encontró habitación para la reserva {reserva_id}.")
-            return
+        # Obtenemos las tareas asociadas a esa reserva
+        tareas = obtenerTareasPorReservaId(reserva_id)
 
-        habitacion_id = datos['id']
-        estado_habitacion = datos['estado']
-        tareas = datos['tareas']
+        habitacion_id = habitacion['id']
+        estado_habitacion = habitacion['estado']
 
-        # 2. Validar estado de la habitación (Regla de negocio)
+        # 2. Validar estado de la habitación (Regla de negocio del Refinamiento N2)
         if estado_habitacion.lower() != "preparada":
             print(f"Advertencia: Habitación {habitacion_id} no estaba 'preparada'. Forzando estados...")
             
             # 2.1 Para cada tarea no finalizada, marcarla como "mal Finalizado"
             for tarea in tareas:
-                if tarea['estado'].lower() != "finalizado":
-                    commit(
-                        "UPDATE Tarea SET estado = 'mal Finalizado' WHERE id = %s",
-                        (tarea['id'],)
-                    )
-                    print(f"  - Tarea {tarea['id']} marcada como 'mal Finalizado'.")
+                # Comprobamos que la tarea exista y tenga estado
+                if tarea and tarea.get('estado'):
+                    if tarea['estado'].lower() != "finalizado":
+                        commit(
+                            "UPDATE Tarea SET estado = 'mal Finalizado' WHERE id = %s",
+                            (tarea['id'],)
+                        )
+                        print(f"  - Tarea {tarea['id']} ({tarea.get('descripcion', 'N/A')}) marcada como 'mal Finalizado'.")
             
             # 2.2 Marcar habitación como "preparada" para poder continuar
             commit(
@@ -86,19 +62,27 @@ def check_in(reserva_id: int):
         )
 
         if affected > 0:
-            print(f"\nCheck-in realizado con éxito.")
+            print(f"\n✅ Check-in realizado con éxito.")
             print(f"Habitación {habitacion_id} (Reserva {reserva_id}) marcada como 'ocupada'.")
         else:
+            # Esto podría pasar si el estado ya era 'ocupada' o si hay un problema de BD
             print(f"Error: No se pudo actualizar la habitación {habitacion_id} a 'ocupada'.")
 
     except Exception as err:
-        print(f"Error inesperado durante el check-in: {err}")
+        print(f"Error inesperado durante el check-in (reserva {reserva_id}): {err}")
 
-# Bloque de prueba
+# --- Bloque de prueba ---
 if __name__ == "__main__":
+    """
+    Permite ejecutar este módulo directamente para probar el check-in.
+    Ejemplo de uso desde la terminal (estando en la carpeta raíz del proyecto):
+    python -m Modulo5.modulo5
+    """
     try:
         # Asumimos que mysql_connection.py está configurado y la BD existe.
         reserva_id_test = int(input("Ingrese el ID de la reserva para hacer Check-in: "))
         check_in(reserva_id_test)
     except ValueError:
         print("Error: El ID debe ser un número entero.")
+    except KeyboardInterrupt:
+        print("\nOperación cancelada por el usuario.")
