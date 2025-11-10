@@ -100,7 +100,7 @@ def crear_reserva(habitacion_id, cliente_id, estado, monto, fecha_check_in, fech
 
 # ------------------ LÓGICA PRINCIPAL ------------------ #
 
-def registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out):
+def registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out, reserva_exitosa):
     tarifa = obtener_tarifa_habitacion(habitacion_id)
     if tarifa is None:
         print("Error: habitación no encontrada.")
@@ -113,10 +113,13 @@ def registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out
 
     monto = tarifa * cantidad_noches
 
+    # Determinar el estado
+    estado = "pendiente" if reserva_exitosa else "cancelada"
+
     reserva_id = crear_reserva(
         habitacion_id,
         cliente_id,
-        "pendiente",
+        estado,
         monto,
         fecha_check_in,
         fecha_check_out
@@ -125,14 +128,19 @@ def registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out
     if reserva_id:
         print("\nReserva registrada exitosamente.")
         print(f"Número de reserva: {reserva_id}")
-        print("Estado inicial: pendiente")
+        print(f"Estado inicial: {estado}")
         print(f"Total calculado: ${monto:.2f} por {cantidad_noches} noche(s)")
     else:
         print("Error al registrar la reserva.")
 
+
 # ------------------ PROGRAMA PRINCIPAL ------------------ #
 
 if __name__ == "__main__":
+        # Preguntar si la reserva se registra normalmente o como cancelada
+    reserva_exitosa_input = input("¿Desea simular una reserva en tiempo? (True/False): ").strip()
+    reserva_exitosa = reserva_exitosa_input.lower() == "true"
+
     # Simular IDs disponibles desde el Módulo 1 (como si ya vinieran filtrados)
     ids_disponibles = random.sample(range(1, 21), 5)
     print(f"IDs de habitaciones disponibles desde Módulo 1: {ids_disponibles}")
@@ -179,7 +187,8 @@ if __name__ == "__main__":
 
     # Ejecutar registro de reserva
     try:
-        registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out)
+        registrar_reserva(habitacion_id, cliente_id, fecha_check_in, fecha_check_out, reserva_exitosa)
+
     except Exception as e:
         print("Error inesperado al registrar la reserva.")
         traceback.print_exc()
