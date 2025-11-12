@@ -3,7 +3,7 @@ from shared.mysql_connection import select, commit
 def reestablecerEstadoStaff(tarea_id: int):
     try:
         staff_asignado_id = select(
-            "SELECT staff_asignado_id FROM Tarea WHERE id = %s LIMIT 1",
+            "SELECT staff_asignado_id FROM Tarea WHERE id = %s and not validada = 'noValidada' LIMIT 1",
             (tarea_id,)
         )
         print(F"staff_asignado_id[0][0] {staff_asignado_id[0][0]}")
@@ -18,4 +18,5 @@ def reestablecerEstadoStaff(tarea_id: int):
             print(f"No se encontró staff asignado para la tarea {tarea_id}.")
             return False
     except:
-        print("ERROR ERROR ERROR")
+        print("Error al reestablecer el estado del staff.")
+        return False

@@ -19,8 +19,9 @@ def verificarValidacion(reserva_id: int):
                 continue
         hecho = establecerHabitacionPreparada(reserva['habitacion_id'])
         if hecho:
+            ultimaTarea = tareas[-1]
             print(f"Todas las tareas de la reserva {reserva_id} han sido validadas. Habitación marcada como preparada.")
-            staffValidado = reestablecerEstadoStaff(reserva_id)
+            staffValidado = reestablecerEstadoStaff(ultimaTarea['id'])
             return staffValidado
         else:
             print(f"No se pudo marcar la habitación de la reserva {reserva_id} como preparada.")
