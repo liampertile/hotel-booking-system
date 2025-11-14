@@ -14,7 +14,7 @@ def parse_datetime(s: str) -> datetime:
     s = s.strip()
     for fmt in _FORMATOS:
         try:
-            # Intenta convertir els tring s a datetime usansdo ese formato.
+            # Intenta convertir el string s a datetime usansdo ese formato.
             return datetime.strptime(s, fmt)
         # si no matchea, lanzamos valueError y seguimso con el siguiente formato.
         except ValueError:
@@ -31,12 +31,27 @@ def validar_entradas(capacidad: int,
                      fecha_check_out: datetime) -> Tuple[bool, Dict[str, Any]]:
     """
     Reglas:
+    0) ni check-in ni check-out pueden ser anteriores a hoy
     1) fecha_check_in < fecha_check_out
     2) número de noches <= 14 (equiv. delta <= 14 días)
     3) capacidad entre 1 y 4
     Devuelve: (es_valido, detalle_por_regla)
     """
     detalle: Dict[str, Any] = {}
+
+    # Regla 0: fechas no en el pasado (comparando solo la fecha, no la hora)
+    hoy = datetime.now().date()
+    regla0_ok = (
+        fecha_check_in.date() >= hoy and
+        fecha_check_out.date() >= hoy
+    )
+    detalle["fechas_no_en_pasado"] = {
+        "ok": regla0_ok,
+        "hoy": hoy.isoformat(),
+        "check_in": fecha_check_in.isoformat(sep=" "),
+        "check_out": fecha_check_out.isoformat(sep=" "),
+        "msg": "Ni la fecha de entrada ni la de salida pueden ser anteriores a la fecha actual."
+    }
 
     # Regla 1
     regla1_ok = fecha_check_in < fecha_check_out
@@ -75,9 +90,10 @@ def validar_entradas(capacidad: int,
         "msg": "La capacidad debe estar entre 1 y 4 huéspedes."
     }
 
-    # Solo es valido si cumple las 3 reglas
-    es_valido = regla1_ok and regla2_ok and regla3_ok
+    # Solo es valido si cumple las 4 reglas
+    es_valido = regla0_ok and regla1_ok and regla2_ok and regla3_ok
     return es_valido, detalle
+
 
 # ---------- Main de prueba (solo para testear este archivo) ----------
 
@@ -108,6 +124,7 @@ def _resultados_validaciones(ok: bool, detalle: Dict[str, Any]) -> None:
     print(f"VALIDACIÓN GLOBAL: {'OK' if ok else 'FALLÓ'}\n")
 
     items = [
+        ("fechas_no_en_pasado", "Fechas no en el pasado"),
         ("fecha_in_menor_a_out", "Fecha de entrada < fecha de salida"),
         ("noches_menor_igual_14", "Número de noches ≤ 14"),
         ("capacidad_entre_1_y_4", "Capacidad entre 1 y 4"),
@@ -116,6 +133,10 @@ def _resultados_validaciones(ok: bool, detalle: Dict[str, Any]) -> None:
         info = detalle.get(key, {})
         estado = "OK" if info.get("ok") else "FALLÓ"
         print(f"- {titulo}: {estado}")
+        if key == "fechas_no_en_pasado":
+            print(f"    hoy      : {info.get('hoy')}")
+            print(f"    check_in : {info.get('check_in')}")
+            print(f"    check_out: {info.get('check_out')}")
         if key == "fecha_in_menor_a_out":
             print(f"    in : {info.get('in')}")
             print(f"    out: {info.get('out')}")
@@ -142,3 +163,4 @@ if __name__ == "__main__":
 
     ok, det = validar_entradas(cap, f_in, f_out)
     _resultados_validaciones(ok, det)
+2
