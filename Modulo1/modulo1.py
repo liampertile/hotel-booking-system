@@ -9,16 +9,12 @@ if ruta_raiz_proyecto not in sys.path:
 
 
 
-# AHORA tus importaciones van después y funcionarán
 from datetime import datetime
 from typing import List, Tuple, Dict, Any 
 from shared.mysql_connection import select 
 
-# ... (El resto de tu código va acá abajo) ...
 
 
-# Ahora tus importaciones funcionarán
-# Asegúrate de que esta línea esté bien (antes tenías "import List" en vez de "from typing import...")
 
 # ---------------- OBTENER HABITACIONES ACTIVAS ----------------#
 # Devuelve tuplas (id, capacidad,estado) de habitaciones consideradas activas.

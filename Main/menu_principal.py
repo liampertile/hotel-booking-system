@@ -46,6 +46,14 @@ def menu():
                 except ValueError:
                     print("Error en el formato de fecha. Use YYYY-MM-DD.")
                     continue
+                hoy = datetime.now().date()
+                if check_in.date() < hoy or check_out.date() < hoy:
+                    print("Error: las fechas de check-in y check-out no pueden ser anteriores a la fecha actual.")
+                    continue
+
+                if check_in >= check_out:
+                    print("Error: la fecha de check-in debe ser anterior a la de check-out.")
+                    continue
 
                 disponibles = consultar_disponibilidad(cantidad, check_in, check_out)
 
