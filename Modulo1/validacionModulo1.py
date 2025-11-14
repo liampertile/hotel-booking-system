@@ -1,166 +1,140 @@
+# validacionmodulo1.py (Modificado)
+
 from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Dict, Any, Tuple
 
 _FORMATOS = (
-    "%Y-%m-%d %H:%M:%S",   # 2025-11-10 14:00:00
-    "%Y-%m-%d %H:%M",      # 2025-11-10 14:00
-    "%Y-%m-%d",            # 2025-11-10
+    "%Y-%m-%d %H:%M:%S",  # 2025-11-10 14:00:00
+    "%Y-%m-%d %H:%M",    # 2025-11-10 14:00
+    "%Y-%m-%d",          # 2025-11-10
 )
 
+# --- Funciones de Parseo (sin cambios) ---
 
 def parse_datetime(s: str) -> datetime:
-    # Intentamos convertir la fecha/hora a los formatos comunes, si ninguno funciona, lanzamos error.
+    """
+    Intenta convertir el string a datetime usando los formatos definidos.
+    Lanza ValueError si ninguno funciona.
+    """
     s = s.strip()
     for fmt in _FORMATOS:
         try:
-            # Intenta convertir el string s a datetime usansdo ese formato.
             return datetime.strptime(s, fmt)
-        # si no matchea, lanzamos valueError y seguimso con el siguiente formato.
         except ValueError:
             pass
     raise ValueError(
         f"Fecha inválida: '{s}'. Formatos válidos: " + ", ".join(_FORMATOS)
-        # Si el for termino y ningún formato funcionó, levantamos nosotros un ValueError con un mensaje enumerando lso formatos validos.
     )
 
+# --- Funciones de Petición y Validación (MODIFICADAS) ---
 
-# ------------- Validaciones -------------
-def validar_entradas(capacidad: int,
-                     fecha_check_in: datetime,
-                     fecha_check_out: datetime) -> Tuple[bool, Dict[str, Any]]:
+def _pedir_capacidad(msg: str) -> int:
     """
-    Reglas:
-    0) ni check-in ni check-out pueden ser anteriores a hoy
-    1) fecha_check_in < fecha_check_out
-    2) número de noches <= 14 (equiv. delta <= 14 días)
-    3) capacidad entre 1 y 4
-    Devuelve: (es_valido, detalle_por_regla)
+    Pide un entero y valida que esté en el rango [1, 4].
+    Repite la pregunta hasta que sea válido.
     """
-    detalle: Dict[str, Any] = {}
-
-    # Regla 0: fechas no en el pasado (comparando solo la fecha, no la hora)
-    hoy = datetime.now().date()
-    regla0_ok = (
-        fecha_check_in.date() >= hoy and
-        fecha_check_out.date() >= hoy
-    )
-    detalle["fechas_no_en_pasado"] = {
-        "ok": regla0_ok,
-        "hoy": hoy.isoformat(),
-        "check_in": fecha_check_in.isoformat(sep=" "),
-        "check_out": fecha_check_out.isoformat(sep=" "),
-        "msg": "Ni la fecha de entrada ni la de salida pueden ser anteriores a la fecha actual."
-    }
-
-    # Regla 1
-    regla1_ok = fecha_check_in < fecha_check_out
-    detalle["fecha_in_menor_a_out"] = {
-        "ok": regla1_ok,  # Guardamos el resultado booleano.
-        # Formato iso para imprimir prolijo.
-        "in": fecha_check_in.isoformat(sep=" "),
-        # Formato iso para imprimir prolijo.
-        "out": fecha_check_out.isoformat(sep=" "),
-        # Este texto solo se muestra si regla1_ok es falso
-        "msg": "Fecha de entrada debe ser menor a la de salida."
-    }
-
-    # Regla 2: noches <= 14
-    delta = fecha_check_out - fecha_check_in
-    # Si por ejemplo
-    # fecha_check_in = 2025-11-10 14:00
-    # fecha_check_out = 2025-11-12 11:00
-    # Delta = 1 día y 24 horas, pero delta.days=1 y delta.seconds=21*3600=75600
-
-    regla2_ok = delta <= timedelta(days=14)
-    # noches aproximadas (si hay horas/minutos, contamos una noche más)
-    noches = delta.days + (1 if delta.seconds > 0 else 0)
-    detalle["noches_menor_igual_14"] = {
-        "ok": regla2_ok,
-        "noches_calculadas": noches,
-        "delta_horas": round(delta.total_seconds() / 3600, 2),
-        "msg": "La cantidad de noches no puede superar 14."
-    }
-
-    # Regla 3: capacidad entre 1 y 4
-    regla3_ok = (1 <= capacidad <= 4)
-    detalle["capacidad_entre_1_y_4"] = {
-        "ok": regla3_ok,
-        "capacidad": capacidad,
-        "msg": "La capacidad debe estar entre 1 y 4 huéspedes."
-    }
-
-    # Solo es valido si cumple las 4 reglas
-    es_valido = regla0_ok and regla1_ok and regla2_ok and regla3_ok
-    return es_valido, detalle
-
-
-# ---------- Main de prueba (solo para testear este archivo) ----------
-
-
-def _pedir_int(msg: str) -> int:
     while True:
         try:
-            # Eliminamos espacios y lo transformamos en entero
-            return int(input(msg).strip())
+            cap_str = input(msg).strip()
+            cap = int(cap_str)
+            # Regla 3: capacidad entre 1 y 4
+            if 1 <= cap <= 4:
+                return cap
+            else:
+                print(f"  → Error: La capacidad debe estar entre 1 y 4. Ingresó: {cap}")
         except ValueError:
-            print("  → Ingrese un número entero válido.")
-        # Si no es un numero, mostramos que es invalido y seguimso en loop.
+            print(f"  → Error: Ingrese un número entero válido (ej: 2). Ingresó: '{cap_str}'")
 
-
-def _pedir_dt(msg: str) -> datetime:
+def _pedir_fecha_check_in(msg: str) -> datetime:
+    """
+    Pide la fecha de check-in.
+    Valida formato y que no sea anterior a hoy.
+    """
+    hoy = datetime.now().date()
     while True:
         try:
-            # Usamos la funcion para parsear a datetime.
-            return parse_datetime(input(msg))
+            f_in_str = input(msg)
+            f_in = parse_datetime(f_in_str)
+            
+            # Regla 0: no en el pasado (comparando solo la fecha)
+            if f_in.date() < hoy:
+                print(f"  → Error: La fecha de check-in no puede ser anterior a hoy ({hoy}).")
+            else:
+                return f_in # Válida
         except ValueError as e:
-            print("  →", e)  # Mostramso el ValuError que nos envia parse_datetime
+            print(f"  → {e}") # Muestra error de parse_datetime
 
+def _pedir_fecha_check_out(msg: str, f_in: datetime) -> datetime:
+    """
+    Pide la fecha de check-out.
+    Valida formato, que sea posterior al check-in y que el rango no supere los 14 días.
+    """
+    while True:
+        try:
+            f_out_str = input(msg)
+            f_out = parse_datetime(f_out_str)
+            
+            # Regla 1: fecha_check_in < fecha_check_out
+            if f_out <= f_in:
+                print(f"  → Error: La fecha de check-out debe ser posterior a la de check-in ({f_in.isoformat(sep=' ')}).")
+                continue # Volver a pedir
 
-def _resultados_validaciones(ok: bool, detalle: Dict[str, Any]) -> None:
-    # ok es el booleano global recibido de validar entradas.
-    # detalle es el dict con el estado de cada regla.
-    print("\n===== RESULTADO DE VALIDACIÓN =====")
-    print(f"VALIDACIÓN GLOBAL: {'OK' if ok else 'FALLÓ'}\n")
+            # Regla 2: noches <= 14
+            delta = f_out - f_in
+            if delta > timedelta(days=14):
+                noches = delta.days + (1 if delta.seconds > 0 else 0)
+                print(f"  → Error: La estadía no puede superar las 14 noches (calculadas: {noches}).")
+                continue # Volver a pedir
+            
+            return f_out # Válida
+        except ValueError as e:
+            print(f"  → {e}") # Muestra error de parse_datetime
 
-    items = [
-        ("fechas_no_en_pasado", "Fechas no en el pasado"),
-        ("fecha_in_menor_a_out", "Fecha de entrada < fecha de salida"),
-        ("noches_menor_igual_14", "Número de noches ≤ 14"),
-        ("capacidad_entre_1_y_4", "Capacidad entre 1 y 4"),
-    ]
-    for key, titulo in items:
-        info = detalle.get(key, {})
-        estado = "OK" if info.get("ok") else "FALLÓ"
-        print(f"- {titulo}: {estado}")
-        if key == "fechas_no_en_pasado":
-            print(f"    hoy      : {info.get('hoy')}")
-            print(f"    check_in : {info.get('check_in')}")
-            print(f"    check_out: {info.get('check_out')}")
-        if key == "fecha_in_menor_a_out":
-            print(f"    in : {info.get('in')}")
-            print(f"    out: {info.get('out')}")
-        if key == "noches_menor_igual_14":
-            print(f"    noches calculadas: {info.get('noches_calculadas')}")
-            print(f"    delta (horas)    : {info.get('delta_horas')}")
-        if key == "capacidad_entre_1_y_4":
-            print(f"    capacidad        : {info.get('capacidad')}")
-        if not info.get("ok"):
-            print(f"    mensaje          : {info.get('msg')}")
-    print("===================================\n")
+# --- Función Principal (NUEVA) ---
 
-
-if __name__ == "__main__":
-    print("=== TEST Validación Módulo 1 ===")
+def pedir_y_validar_entradas_modulo1() -> Tuple[int, datetime, datetime]:
+    """
+    Función principal de este módulo.
+    Pide y valida interactivamente la capacidad y las fechas.
+    
+    Devuelve:
+        (int, datetime, datetime): (capacidad, fecha_in, fecha_out) validadas.
+    """
+    print("=== Configuración de Búsqueda (Módulo 1) ===")
     print("Formatos de fecha aceptados:")
     print("  - YYYY-MM-DD HH:MM:SS")
     print("  - YYYY-MM-DD HH:MM")
-    print("  - YYYY-MM-DD\n")
+    print("  - YYYY-MM-DD (ej: 2025-11-20)\n")
 
-    cap = _pedir_int("Capacidad (1 a 4): ")
-    f_in = _pedir_dt("Fecha de entrada: ")
-    f_out = _pedir_dt("Fecha de salida : ")
+    # 1. Pedir Capacidad (ya valida 1-4)
+    cap = _pedir_capacidad("Capacidad (1 a 4): ")
 
-    ok, det = validar_entradas(cap, f_in, f_out)
-    _resultados_validaciones(ok, det)
-2
+    # 2. Pedir Check-in (ya valida formato y que no sea en el pasado)
+    f_in = _pedir_fecha_check_in("Fecha de entrada: ")
+
+    # 3. Pedir Check-out (ya valida formato, orden de fechas y límite de 14 días)
+    f_out = _pedir_fecha_check_out(f"Fecha de salida : ", f_in)
+    
+    print("\n--- Entradas validadas correctamente ---")
+    print(f" Capacidad: {cap}")
+    print(f" Check-in:  {f_in.isoformat(sep=' ')}")
+    print(f" Check-out: {f_out.isoformat(sep=' ')}")
+
+    return cap, f_in, f_out
+
+# --- Bloque de Prueba (if __name__ == "__main__") ---
+# Este bloque ahora solo sirve para probar este archivo de forma aislada.
+# La lógica principal se moverá a 'modulo1.py'
+
+if __name__ == "__main__":
+    print("=== INICIO TEST: validacionmodulo1.py ===")
+    
+    # Llamamos a la nueva función principal de este módulo
+    cap, f_in, f_out = pedir_y_validar_entradas_modulo1()
+    
+    print("\n--- TEST FINALIZADO ---")
+    print("Valores recibidos del test:")
+    print(f" Capacidad: {cap} (Tipo: {type(cap)})")
+    print(f" Check-in:  {f_in} (Tipo: {type(f_in)})")
+    print(f" Check-out: {f_out} (Tipo: {type(f_out)})")

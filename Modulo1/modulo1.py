@@ -105,10 +105,28 @@ def consultar_disponibilidad(capacidad: int,
 
 
 if __name__ == "__main__":
-    cap = 2
-    f_in = datetime.fromisoformat("2025-11-10 10:00:00")
-    f_out = datetime.fromisoformat("2025-11-11 10:00:00")
+    
+    # 1. IMPORTAR LA NUEVA FUNCIÓN ÚNICA DE VALIDACIÓN
+    try:
+        from validacionModulo1 import pedir_y_validar_entradas_modulo1
+    except ImportError as e:
+        print(f"Error fatal: No se pudo importar 'validacionesModulo1.py'.")
+        print(f"Asegúrate de que esté en la carpeta 'Main/'. Detalle: {e}")
+        sys.exit(1) # Salimos del script
 
+
+    cap, f_in, f_out = pedir_y_validar_entradas_modulo1()
+
+    # 3. EJECUTAR LÓGICA PRINCIPAL
+    print(f"\n--- Buscando habitaciones disponibles... ---")
+    
+    # Llamamos a tu función principal con los datos ya validados
     libres = consultar_disponibilidad(cap, f_in, f_out)
-    for h in libres:
-        print(h)
+    
+    # 4. Mostrar resultados
+    if not libres:
+        print("\nResultado: No se encontraron habitaciones disponibles para esos criterios.")
+    else:
+        print(f"\nResultado: ¡Se encontraron {len(libres)} habitaciones libres!")
+        for h in libres:
+            print(f"  - Habitación ID: {h['id']}, Capacidad: {h['capacidad']}, Estado: {h['estado']}")
