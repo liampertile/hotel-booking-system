@@ -11,6 +11,7 @@ from modulo2 import registrar_reserva_db, crear_cliente, buscar_cliente_por_dni
 from modulo3 import confirmar_reserva
 from Modulo4.modulo4 import prepararHabitacion
 from Modulo5.Modulo5 import check_in
+from Modulo5.validacionModulo5 import validar_checkin 
 from shared.mysql_connection import select
 
 
@@ -44,8 +45,8 @@ def menu():
                 check_out_str = input("Fecha de check-out (YYYY-MM-DD): ").strip()
 
                 try:
-                    check_in = datetime.strptime(check_in_str, "%Y-%m-%d")
-                    check_out = datetime.strptime(check_out_str, "%Y-%m-%d")
+                    check_in_date = datetime.strptime(check_in_str, "%Y-%m-%d")
+                    check_out_date = datetime.strptime(check_out_str, "%Y-%m-%d")
                 except ValueError:
                     print("Error: formato de fecha incorrecto. Use YYYY-MM-DD.")
                     continue
@@ -53,7 +54,7 @@ def menu():
                 # ---------------------------------------
                 # CONSULTAR DISPONIBILIDAD (MÓDULO 1)
                 # ---------------------------------------
-                disponibles = consultar_disponibilidad(cantidad, check_in, check_out)
+                disponibles = consultar_disponibilidad(cantidad, check_in_date, check_out_date)
 
                 # 1) Error de validaciones → módulo 1 ya mostró el mensaje
                 if disponibles is None:
@@ -131,7 +132,7 @@ def menu():
                 # ---------------------------------------
                 # REGISTRAR LA RESERVA (MÓDULO 2)
                 # ---------------------------------------
-                registrar_reserva_db(habitacion_id, cliente_id, check_in, check_out, True)
+                registrar_reserva_db(habitacion_id, cliente_id, check_in_date, check_out_date, True)
 
             except Exception as e:
                 print("Error inesperado al consultar disponibilidad:", e)
@@ -156,11 +157,22 @@ def menu():
         elif opcion == "4":
             try:
                 reserva_id = int(input("Ingrese el ID de la reserva para check-in: "))
-                check_in(reserva_id)
+                admin_id = int(input("Ingrese su ID de (recepcionista/admin): "))
+
+                # 2. Ejecutamos la validación primero
+                if validar_checkin(reserva_id):
+                    # 3. Si pasa, llamamos al Módulo 5 con la nueva firma
+                    print("--- Iniciando Módulo 5: Check-in ---")
+                    check_in(reserva_id, admin_id)
+                    print("--- Módulo 5: Check-in finalizado ---")
+                else:
+                    # La validación ya imprimió el error específico
+                    print("Operación cancelada. Volviendo al menú.")
+
             except ValueError:
-                print("El ID de la reserva debe ser un número entero.")
+                print("El ID de la reserva y el ID de admin deben ser números enteros.")
             except Exception as e:
-                print("Error al realizar el check-in:", e)
+                print(f"Error al realizar el check-in: {e}")
 
         elif opcion == "5":
             print("Gracias por utilizar el sistema. ¡Hasta luego!")

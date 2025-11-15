@@ -20,6 +20,7 @@ def validar_checkin(reserva_id: int) -> bool:
     1. La reserva debe existir.
     2. La reserva debe estar en estado "confirmada".
     3. La fecha actual debe ser >= a la fecha_check_in.
+    4. La habitación NO debe estar ya "ocupada" (para evitar doble check-in).
     """
     
     # --- 1. & 2. Validar estado de la reserva ---
@@ -44,6 +45,19 @@ def validar_checkin(reserva_id: int) -> bool:
         print(f"  (Hoy: {fecha_actual} | Check-in: {fecha_check_in})")
         return False
 
+    # --- 4. ¡CAMBIO CRÍTICO! Validar estado de la Habitación ---
+    habitacion = obtenerHabitacionPorReservaId(reserva_id)
+    
+    if not habitacion:
+        # Esto es defensivo, no debería pasar si la reserva existe
+        print(f"Error (Validación): No se encontró habitación para la reserva {reserva_id}.")
+        return False
+
+    if habitacion['estado'].lower() == "ocupada":
+        print(f"Error (Validación): La habitación {habitacion['id']} ya se encuentra 'ocupada'.")
+        print("  (El check-in de esta reserva probablemente ya fue realizado).")
+        return False
+    # --- FIN DEL CAMBIO ---
 
     # Si pasa todas las validaciones:
     print(f"Validación de Check-in (Reserva {reserva_id}): OK.")
