@@ -30,12 +30,15 @@ def menu():
 
         if opcion == "1":
             try:
+                # ---------------------------------------
+                # ENTRADAS DEL USUARIO
+                # ---------------------------------------
                 cantidad_str = input("Ingrese la cantidad de huéspedes: ").strip()
-                if not cantidad_str.isdigit():
+                try:
+                    cantidad = int(cantidad_str)
+                except ValueError:
                     print("Error: la cantidad de huéspedes debe ser un número entero.")
                     continue
-
-                cantidad = int(cantidad_str)
 
                 check_in_str = input("Fecha de check-in (YYYY-MM-DD): ").strip()
                 check_out_str = input("Fecha de check-out (YYYY-MM-DD): ").strip()
@@ -44,61 +47,92 @@ def menu():
                     check_in = datetime.strptime(check_in_str, "%Y-%m-%d")
                     check_out = datetime.strptime(check_out_str, "%Y-%m-%d")
                 except ValueError:
-                    print("Error en el formato de fecha. Use YYYY-MM-DD.")
-                    continue
-                hoy = datetime.now().date()
-                if check_in.date() < hoy or check_out.date() < hoy:
-                    print("Error: las fechas de check-in y check-out no pueden ser anteriores a la fecha actual.")
+                    print("Error: formato de fecha incorrecto. Use YYYY-MM-DD.")
                     continue
 
-                if check_in >= check_out:
-                    print("Error: la fecha de check-in debe ser anterior a la de check-out.")
-                    continue
-
+                # ---------------------------------------
+                # CONSULTAR DISPONIBILIDAD (MÓDULO 1)
+                # ---------------------------------------
                 disponibles = consultar_disponibilidad(cantidad, check_in, check_out)
 
-                if disponibles:
-                    print("\nHabitaciones disponibles:")
-                    for hab in disponibles:
-                        try:
-                            id_ = hab["id"]
-                            capacidad = hab["capacidad"]
-                            estado = hab.get("estado", "desconocido")
-                            tarifa_resultado = select("SELECT tarifa FROM Habitacion WHERE id = %s", (id_,))
-                            tarifa = tarifa_resultado[0][0] if tarifa_resultado else 0.0
-                            print(f"ID: {id_} | Capacidad: {capacidad} | Estado: {estado} | Tarifa: ${tarifa:.2f}")
-                        except Exception as e:
-                            print("Error al mostrar habitación:", e)
+                # 1) Error de validaciones → módulo 1 ya mostró el mensaje
+                if disponibles is None:
+                    continue
 
-                    respuesta = input("\n¿Desea registrar una reserva con alguna de estas habitaciones? (s/n): ").strip().lower()
-                    if respuesta == "s":
-                        try:
-                            habitacion_id = int(input("Ingrese el ID de la habitación a reservar: "))
-                            ids_disponibles = [h["id"] for h in disponibles]
-                            if habitacion_id not in ids_disponibles:
-                                print("ID no válido. No pertenece a las habitaciones disponibles.")
-                                continue
-
-                            dni = input("DNI del cliente: ")
-                            cliente_id = buscar_cliente_por_dni(dni)
-                            if not cliente_id:
-                                print("Cliente no encontrado, ingrese sus datos:")
-                                nombre = input("Nombre del cliente: ")
-                                email = input("Email: ")
-                                telefono = input("Teléfono: ")
-                                cliente_id = crear_cliente(nombre, dni, email, telefono)
-                                if not cliente_id:
-                                    print("Error al registrar el cliente.")
-                                    continue
-
-                            registrar_reserva_db(habitacion_id, cliente_id, check_in, check_out, True)
-
-                        except ValueError:
-                            print("ID inválido.")
-                        except Exception as e:
-                            print("Error inesperado al registrar la reserva:", e)
-                else:
+                # 2) No hay habitaciones
+                if disponibles == []:
                     print("No hay habitaciones disponibles en ese rango.")
+                    continue
+
+                # 3) Habitaciones encontradas
+                print("\nHabitaciones disponibles:")
+                for hab in disponibles:
+                    try:
+                        id_ = hab["id"]
+                        capacidad = hab["capacidad"]
+                        estado = hab.get("estado", "desconocido")
+
+                        tarifa_resultado = select(
+                            "SELECT tarifa FROM Habitacion WHERE id = %s", (id_,)
+                        )
+                        tarifa = tarifa_resultado[0][0] if tarifa_resultado else 0.0
+
+                        print(f"ID: {id_} | Capacidad: {capacidad} | Estado: {estado} | Tarifa: ${tarifa:.2f}")
+                    except Exception as e:
+                        print("Error al mostrar habitación:", e)
+
+                # ---------------------------------------
+                # CONFIRMAR SI QUIERE RESERVAR (s/n)
+                # ---------------------------------------
+                while True:
+                    respuesta = input(
+                        "\n¿Desea registrar una reserva con alguna de estas habitaciones? (s/n): "
+                    ).strip().lower()
+
+                    if respuesta in ("s", "n"):
+                        break
+
+                    print("Respuesta inválida. Ingrese solo 's' o 'n'.")
+
+                if respuesta == "n":
+                    continue
+
+                # ---------------------------------------
+                # SELECCIÓN DE HABITACIÓN
+                # ---------------------------------------
+                ids_disponibles = [h["id"] for h in disponibles]
+                while True:
+                    try:
+                        habitacion_id = int(input("Ingrese el ID de la habitación a reservar: "))
+                        if habitacion_id in ids_disponibles:
+                            break
+                        print("ID no válido. Intente nuevamente con una habitación disponible.")
+                    except ValueError:
+                        print("Entrada inválida. Ingrese un número entero.")
+
+                # ---------------------------------------
+                # DATOS DEL CLIENTE
+                # ---------------------------------------
+                dni = input("DNI del cliente: ").strip()
+                cliente_id = buscar_cliente_por_dni(dni)
+
+                if not cliente_id:
+                    print("Cliente no encontrado, ingrese sus datos:")
+                    nombre = input("Nombre del cliente: ")
+                    email = input("Email: ")
+                    telefono = input("Teléfono: ")
+
+                    cliente_id = crear_cliente(nombre, dni, email, telefono)
+
+                    if not cliente_id:
+                        print("Error al registrar el cliente.")
+                        continue
+
+                # ---------------------------------------
+                # REGISTRAR LA RESERVA (MÓDULO 2)
+                # ---------------------------------------
+                registrar_reserva_db(habitacion_id, cliente_id, check_in, check_out, True)
+
             except Exception as e:
                 print("Error inesperado al consultar disponibilidad:", e)
 
@@ -134,6 +168,7 @@ def menu():
 
         else:
             print("Opción inválida. Por favor seleccione entre 1 y 5.")
+
 
 if __name__ == "__main__":
     menu()

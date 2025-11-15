@@ -38,14 +38,14 @@ def listar_reservas(habitacion_id: int, estados: Tuple[str, ...]) -> List[Tuple[
 def consultar_disponibilidad(capacidad: int,
                              fecha_check_in: datetime,
                              fecha_check_out: datetime) -> List[Dict[str, any]]:
-    
+
     # ---------- VALIDACIONES ANTES DE PROCESAR ---------- #
     if not validar_capacidad(capacidad):
-        return []
+        return None  # error
 
     if not validar_fechas(fecha_check_in, fecha_check_out):
-        return []
-    
+        return None  # error
+
     # ---------- OBTENCIÓN Y FILTRADO ---------- #
     habitaciones = obtener_habitaciones_activas()
     if not habitaciones:
@@ -63,14 +63,10 @@ def consultar_disponibilidad(capacidad: int,
         )
 
         solapa = False
-        i = 0
-        n = len(reservas_activas)
-
-        while not solapa and i < n:
-            r_in, r_out = reservas_activas[i]
+        for r_in, r_out in reservas_activas:
             if (r_in < fecha_check_out) and (r_out > fecha_check_in):
                 solapa = True
-            i += 1
+                break
 
         if not solapa:
             disponibles.append({
@@ -81,11 +77,12 @@ def consultar_disponibilidad(capacidad: int,
 
     return disponibles
 
+
 # ---------------- TEST MANUAL ----------------#
 if __name__ == "__main__":
     cap = 2
-    f_in = datetime.fromisoformat("2025-11-10 10:00:00")
-    f_out = datetime.fromisoformat("2025-11-11 10:00:00")
+    f_in = datetime.fromisoformat("2024-11-10 10:00:00")
+    f_out = datetime.fromisoformat("2024-11-11 10:00:00")
 
     libres = consultar_disponibilidad(cap, f_in, f_out)
     for h in libres:
