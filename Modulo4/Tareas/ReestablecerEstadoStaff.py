@@ -6,7 +6,6 @@ def reestablecerEstadoStaff(tarea_id: int):
             "SELECT staff_asignado_id FROM Tarea WHERE id = %s and not validada = 'noValidada' LIMIT 1",
             (tarea_id,)
         )
-        print(F"staff_asignado_id[0][0] {staff_asignado_id[0][0]}")
         if staff_asignado_id[0][0]:
             commit(
                 "UPDATE Persona SET ocupado = 0 WHERE id = %s and tipo = 'limpieza'",
