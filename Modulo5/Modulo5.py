@@ -1,104 +1,89 @@
 import sys
-from os.path import abspath, dirname
-from Main.mysql_connection import select, commit
+import os
 
-from typing import List, Dict, Any
+# --- Configuración del Path ---
+ruta_raiz_proyecto = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if ruta_raiz_proyecto not in sys.path:
+    sys.path.append(ruta_raiz_proyecto)
+# --- Fin Configuración del Path ---
 
-def _obtener_habitacion_y_tareas(reserva_id: int) -> Dict[str, Any]:
+from shared.mysql_connection import commit
+from shared.obtenerHabitacionByReservaId import obtenerHabitacionPorReservaId
+
+# --- Imports de Funciones de Módulo 4 ---
+from Modulo4.Tareas.GestionarTareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
+from Modulo4.Tareas.GestionarTareas.FinalizarTarea import finalizarTarea
+from Modulo4.Tareas.GestionarTareas.ValidarTarea import validarTarea
+from Modulo4.Tareas.ReestablecerEstadoStaff import reestablecerEstadoStaff
+from Modulo4.ValidacionDeLaHabitacion.EstablecerHabitacionPreparada import establecerHabitacionPreparada
+# --- Fin de Imports de Módulo 4 ---
+
+
+def check_in(reserva_id: int, admin_id: int):
     """
-    Función interna para obtener la habitación y sus tareas asociadas 
-    a través de la reserva.
-    """
-    # Obtenemos la habitación primero
-    habitacion_rows = select(
-       "SELECT h.id, h.estado "
-       "FROM Habitacion AS h "
-       "JOIN Reserva r ON h.id = r.habitacion_id "
-       "WHERE r.id = %s "
-       "LIMIT 1",
-       (reserva_id,)
-    )
-    
-    if not habitacion_rows:
-        return None  # No se encontró habitación para esa reserva
-
-    habitacion_id, habitacion_estado = habitacion_rows[0]
-    
-    # Obtenemos las tareas de esa reserva
-    tarea_rows = select(
-        "SELECT id, estado FROM Tarea WHERE reserva_id = %s",
-        (reserva_id,)
-    )
-    
-    tareas = []
-    for tarea_row in tarea_rows:
-        tareas.append({"id": tarea_row[0], "estado": tarea_row[1]})
-        
-    return {
-        "id": habitacion_id,
-        "estado": habitacion_estado,
-        "tareas": tareas
-    }
-
-def check_in(reserva_id: int):
-    """
-    Realiza el check-in de una reserva, actualizando el estado de la habitación.
-    
-    Asume que la reserva ya fue validada (confirmada, fecha OK) por el módulo MAIN.
+    Realiza el check-in de una reserva.
+    Llama a las funciones de Módulo 4 para forzar estados si es necesario.
     """
     try:
         # 1. Obtener la habitación y sus tareas
-        datos = _obtener_habitacion_y_tareas(reserva_id)
+        habitacion = obtenerHabitacionPorReservaId(reserva_id)
         
-        if not datos:
-            print(f"Error: No se encontró habitación para la reserva {reserva_id}.")
+        if not habitacion:
+            print(f"Error (Módulo 5): No se encontró habitación para la reserva {reserva_id}.")
             return
 
-        habitacion_id = datos['id']
-        estado_habitacion = datos['estado']
-        tareas = datos['tareas']
+        tareas = obtenerTareasPorReservaId(reserva_id)
+        habitacion_id = habitacion['id']
+        estado_habitacion = habitacion['estado']
 
-        # 2. Validar estado de la habitación (Regla de negocio)
+        # 2. Validar estado de la habitación
         if estado_habitacion.lower() != "preparada":
-            print(f"Advertencia: Habitación {habitacion_id} no estaba 'preparada'. Forzando estados...")
+            print(f"Advertencia: La habitación {habitacion_id} no estaba preparada. Registrando incumplimiento...")
             
-            # 2.1 Para cada tarea no finalizada, marcarla como "mal Finalizado"
+            staff_fue_liberado = False
+
+            # 2.1 Forzar tareas usando funciones de Módulo 4
             for tarea in tareas:
-                if tarea['estado'].lower() != "finalizado":
-                    commit(
-                        "UPDATE Tarea SET estado = 'mal Finalizado' WHERE id = %s",
-                        (tarea['id'],)
-                    )
-                    print(f"  - Tarea {tarea['id']} marcada como 'mal Finalizado'.")
-            
-            # 2.2 Marcar habitación como "preparada" para poder continuar
-            commit(
-                "UPDATE Habitacion SET estado = 'preparada' WHERE id = %s",
-                (habitacion_id,)
-            )
-            print(f"Habitación {habitacion_id} forzada a estado 'preparada'.")
+                if tarea and tarea.get('estado') and tarea['estado'].lower() != "finalizado":
+                    
+                    tarea_id = tarea['id']
+                    print(f"  - Terminando la tarea {tarea_id}...")
+                    finalizarTarea(tarea_id)
+                    
+                    print(f"  - la tarea {tarea_id} fue validada como Mal Realizada por Admin {admin_id}...")
+                    validarTarea(tarea_id, 'malHecha', admin_id)
+                    
+                    if not staff_fue_liberado and tarea.get('staff_asignado_id'):
+                        print(f"  - Liberando al staff {tarea.get('staff_asignado_id')}...")
+                        reestablecerEstadoStaff(tarea_id) 
+                        staff_fue_liberado = True
+
+            # 2.2 Marcar habitación como "preparada" (usando Módulo 4)
+            print(f"Forzando estado de Habitación {habitacion_id} a 'preparada'.")
+            establecerHabitacionPreparada(habitacion_id)
+            # --- FIN DEL CAMBIO ---
 
         # 3. Registrar Ocupación
-        # En este punto, la habitación SIEMPRE está 'preparada' (sea originalmente o forzada)
         affected = commit(
             "UPDATE Habitacion SET estado = 'ocupada' WHERE id = %s",
             (habitacion_id,)
         )
 
         if affected > 0:
-            print(f"\nCheck-in realizado con éxito.")
+            print(f"\n✅ Check-in realizado con éxito.")
             print(f"Habitación {habitacion_id} (Reserva {reserva_id}) marcada como 'ocupada'.")
         else:
             print(f"Error: No se pudo actualizar la habitación {habitacion_id} a 'ocupada'.")
 
     except Exception as err:
-        print(f"Error inesperado durante el check-in: {err}")
+        print(f"Error inesperado durante el check-in (reserva {reserva_id}): {err}")
 
-# Bloque de prueba
+# --- (El bloque de prueba queda igual) ---
 if __name__ == "__main__":
     try:
-        # Asumimos que mysql_connection.py está configurado y la BD existe.
         reserva_id_test = int(input("Ingrese el ID de la reserva para hacer Check-in: "))
-        check_in(reserva_id_test)
+        admin_id_test = int(input("Ingrese el ID de admin que realiza la operación: "))
+        check_in(reserva_id_test, admin_id_test)
     except ValueError:
-        print("Error: El ID debe ser un número entero.")
+        print("Error: Los IDs deben ser números enteros.")
+

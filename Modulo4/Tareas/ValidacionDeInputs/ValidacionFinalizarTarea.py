@@ -7,7 +7,7 @@ def validacionFinalizarTarea(tarea_id: int) -> bool:
     )
     
     if not row:
-        print(f"La tarea {tarea_id} no existe.")
+        print(f"La tarea {tarea_id} no se encuentra en progreso, no se puede finalizar.")
         return False
     else:
         if row[0][0] != 'enProgreso':

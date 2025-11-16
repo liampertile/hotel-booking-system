@@ -7,8 +7,8 @@ def comprobarEstado(reserva_id: int):
         return None
     else:
         if habitacion["estado"] == "libre":
-            print(f"La habitación {habitacion['id']} se encuentra libre.")
+            print(f"\nLa habitación {habitacion['id']} se encuentra libre.")
             return True
         else:
-            print(f"La habitación {habitacion['id']} no puede ser preparada.")
+            print(f"\nLa habitación {habitacion['id']} no se encuentra libre.")
             return False
