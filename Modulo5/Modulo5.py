@@ -44,22 +44,22 @@ def check_in(reserva_id: int, admin_id: int):
 
             # 2.1 Forzar tareas usando funciones de Módulo 4
             for tarea in tareas:
-                if tarea and tarea.get('estado') and tarea['estado'].lower() != "finalizado":
+                if tarea and tarea.get('estado') and tarea['estado'].lower() != "finalizada":
                     
                     tarea_id = tarea['id']
-                    print(f"  - Terminando la tarea {tarea_id}...")
+                    # print(f"  - Terminando la tarea {tarea_id}...")
                     finalizarTarea(tarea_id)
                     
-                    print(f"  - la tarea {tarea_id} fue validada como Mal Realizada por Admin {admin_id}...")
+                    # print(f"  - la tarea {tarea_id} fue validada como Mal Realizada por Admin {admin_id}...")
                     validarTarea(tarea_id, 'malHecha', admin_id)
                     
-                    if not staff_fue_liberado and tarea.get('staff_asignado_id'):
-                        print(f"  - Liberando al staff {tarea.get('staff_asignado_id')}...")
-                        reestablecerEstadoStaff(tarea_id) 
-                        staff_fue_liberado = True
+            if not staff_fue_liberado and tarea.get('staff_asignado_id'):
+                # print(f"  - Liberando al staff {tarea.get('staff_asignado_id')}...")
+                reestablecerEstadoStaff(tarea_id) 
+                staff_fue_liberado = True
 
             # 2.2 Marcar habitación como "preparada" (usando Módulo 4)
-            print(f"Forzando estado de Habitación {habitacion_id} a 'preparada'.")
+            print(f"Forzando estado de Habitación {habitacion_id} a preparada.")
             establecerHabitacionPreparada(habitacion_id)
             # --- FIN DEL CAMBIO ---
 
