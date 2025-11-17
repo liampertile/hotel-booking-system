@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # Imports
 # --- IMPORT MODIFICADO ---
 # from Main.validacionModulo1 import validar_capacidad, validar_fechas (Línea original)
-from Main.validacionModulo1 import validar_capacidad, validar_fecha_check_in, valid2ar_fecha_check_out
+from Main.validacionModulo1 import validar_capacidad, validar_fecha_check_in, validar_fecha_check_out
 # --- FIN IMPORT MODIFICADO ---
 from Main.modulo1 import consultar_disponibilidad
 from Main.modulo2 import registrar_reserva_db, crear_cliente, buscar_cliente_por_dni
