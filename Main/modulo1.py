@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import List, Tuple, Dict, Any
 
 from shared.mysql_connection import select
-from Main.validacionModulo1 import validar_capacidad, validar_fechas  # <-- NUEVO
+#from Main.validacionModulo1 import validar_capacidad, validar_fechas  # <-- NUEVO
 
 # ---------------- OBTENER HABITACIONES ACTIVAS ----------------#
 def obtener_habitaciones_activas() -> List[Tuple[int, int, str]]:
@@ -40,11 +40,11 @@ def consultar_disponibilidad(capacidad: int,
                              fecha_check_out: datetime) -> List[Dict[str, any]]:
 
     # ---------- VALIDACIONES ANTES DE PROCESAR ---------- #
-    if not validar_capacidad(capacidad):
-        return None  # error
+    #if not validar_capacidad(capacidad):
+       # return None  # error
 
-    if not validar_fechas(fecha_check_in, fecha_check_out):
-        return None  # error
+    #if not validar_fechas(fecha_check_in, fecha_check_out):
+        #return None  # error
 
     # ---------- OBTENCIÓN Y FILTRADO ---------- #
     habitaciones = obtener_habitaciones_activas()
