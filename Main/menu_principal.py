@@ -233,7 +233,7 @@ def menu():
                     # Validación de precondiciones
                     # if validar_checkout(reserva_id):
                     print("--- Iniciando Módulo 6: Check-out ---")
-                    check_out(reserva_id)
+                    check_out(reserva_id, adminId)
                     print("--- Módulo 6: Check-out finalizado ---")
                     # else:
                         # print("Precondiciones no satisfechas. Operación cancelada.")
