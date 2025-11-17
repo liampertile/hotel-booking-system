@@ -14,7 +14,7 @@ def asignarTareas(reserva_id: int) -> bool:
             return False
         else:
             for tarea in tareas:
-                print("tarea['id']:", tarea['id'], "tarea['estado']:", tarea['estado'])
+                print("ID:", tarea['id'], "Estado:", tarea['estado'])
                 if tarea['estado'] != 'pendiente':
                     print(f"La tarea {tarea['id']} ya fue procesada, se omite.")
                     continue

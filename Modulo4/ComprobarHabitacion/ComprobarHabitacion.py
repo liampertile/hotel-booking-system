@@ -7,6 +7,7 @@ def comprobarHabitacion(reserva_id: int):
     if habitacionLibre is None:
         return False
     habitacionReservada = comprobarReserva(reserva_id)
+    print("habitacionLibre:", habitacionLibre, "habitacionReservada:", habitacionReservada)
     if habitacionReservada is None:
         return False
     if habitacionLibre and habitacionReservada:

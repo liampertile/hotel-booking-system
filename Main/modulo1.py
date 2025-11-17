@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import List, Tuple, Dict, Any
 
 from shared.mysql_connection import select
-from validacionModulo1 import validar_capacidad, validar_fechas  # <-- NUEVO
+from Main.validacionModulo1 import validar_capacidad, validar_fechas  # <-- NUEVO
 
 # ---------------- OBTENER HABITACIONES ACTIVAS ----------------#
 def obtener_habitaciones_activas() -> List[Tuple[int, int, str]]:

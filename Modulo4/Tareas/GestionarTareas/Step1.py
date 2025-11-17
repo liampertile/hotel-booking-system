@@ -1,7 +1,7 @@
 from Modulo4.Tareas.GestionarTareas.ObtenerTareasPorReservaId import obtenerTareasPorReservaId
 from Modulo4.Tareas.GestionarTareas.Step2 import step2
 
-def step1(reserva_id: int, admin_id: int = 2):
+def step1(reserva_id: int, admin_id: int):
     try:
         while True:
             tareas = obtenerTareasPorReservaId(reserva_id)
@@ -21,7 +21,7 @@ def step1(reserva_id: int, admin_id: int = 2):
                     try:
                         tarea_id = int(ingreso)
                     except ValueError:
-                        print("ID de tarea inválido. Por favor, ingrese un número entero.")
+                        print("ID de tarea inválido. Por favor, ingrese una opción válida.")
                         continue
                 if not any(tarea['id'] == tarea_id for tarea in tareas):
                     print(f"No existe una tarea con ID {tarea_id} para esta reserva.")

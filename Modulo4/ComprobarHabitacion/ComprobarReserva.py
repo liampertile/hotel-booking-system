@@ -17,7 +17,11 @@ def comprobarReserva(reserva_id: int):
         #     print("La habitación tiene una próxima reserva")
         #     return True
         else:
-            print("La habitación no está asociada a una reserva confirmada")
-            return False
+            if estado == "finalizada":
+                print("La reserva ya ha sido finalizada, se deja la habitación preparada.")
+                return True
+            else:
+                print("La habitación no está asociada a una reserva confirmada")
+                return False
         
         
