@@ -16,6 +16,7 @@ def buscar_cliente_por_dni(dni):
         SELECT id FROM Persona
         WHERE dni = %s AND tipo = 'cliente'
     """, (dni,))
+    print(resultado)
     return resultado[0][0] if resultado else None
 
 def crear_cliente(nombre, dni, email, telefono):

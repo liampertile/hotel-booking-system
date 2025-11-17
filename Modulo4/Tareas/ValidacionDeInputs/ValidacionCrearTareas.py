@@ -13,8 +13,9 @@ def validacionCrearTareas(reserva_id: int) -> bool:
         return True
     else:
         for tarea in tareas:
-            if tarea['estado'] != 'finalizada' and tarea['validada'] == 'noValidada':
-                print(f"La tarea {tarea['id']} aún no ha sido finalizada o validada. No se pueden crear nuevas tareas.")
+            # if tarea['estado'] != 'finalizada' and tarea['validada'] == 'noValidada':
+            if tarea['validada'] == 'noValidada':
+                print(f"La tarea {tarea['id']} aún no ha sido validada. No se pueden crear nuevas tareas.")
                 return False
             continue
     return True

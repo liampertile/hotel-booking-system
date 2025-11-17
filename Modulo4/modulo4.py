@@ -63,7 +63,7 @@ def prepararHabitacion(reserva_id: int, admin_id: int):
                             else:
                                 tareasAsignadas = asignarTareas(reserva_id)
                                 if tareasAsignadas:
-                                    print("Tareas asignadas correctamente.")
+                                    print("Proceso de asignación completado.")
                                 else:
                                     print("No se pudieron asignar las tareas.")
                         case '4':

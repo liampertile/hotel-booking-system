@@ -1,6 +1,12 @@
-*.env
-*.venv/
-
+# Python bytecode
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
+# Virtualenv
+.venv/
+env/
+.env
+venv/
+*.cpython-*/
