@@ -10,7 +10,7 @@ from Modulo6.validacionModulo6 import validar_checkout
 from Modulo4.modulo4 import prepararHabitacion
 
 
-def check_out(reserva_id: int):
+def check_out(reserva_id: int,admin_id: int):
     """
     MÓDULO 6 — CHECK-OUT
     Flujo:
@@ -68,7 +68,7 @@ def check_out(reserva_id: int):
     # 3) PREPARAR HABITACIÓN (Módulo 4)
     # ------------------------------------------------------------------
     try:
-        prepararHabitacion(reserva_id, habitacion_id)
+        prepararHabitacion(reserva_id, admin_id)
     except Exception as e:
         print("Advertencia: la preparación falló o no pudo completarse:", e)
 
