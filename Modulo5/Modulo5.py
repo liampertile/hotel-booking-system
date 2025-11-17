@@ -33,6 +33,9 @@ def check_in(reserva_id: int, admin_id: int):
             return
 
         tareas = obtenerTareasPorReservaId(reserva_id)
+        if len(tareas) == 0:
+            print(f"No hay tareas asociadas a la reserva {reserva_id}.")
+            return False
         habitacion_id = habitacion['id']
         estado_habitacion = habitacion['estado']
 
