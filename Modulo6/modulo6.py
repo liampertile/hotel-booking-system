@@ -6,7 +6,7 @@ from datetime import datetime
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from shared.mysql_connection import select, commit
-from validacionModulo6 import validar_checkout
+from Modulo6.validacionModulo6 import validar_checkout
 from Modulo4.modulo4 import prepararHabitacion
 
 
