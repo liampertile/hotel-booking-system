@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from Main.modulo1 import consultar_disponibilidad
 from Main.modulo2 import registrar_reserva_db, crear_cliente, buscar_cliente_por_dni
 from Main.modulo3 import confirmar_reserva
+from Main.listarReservas import listarReservas
 from Modulo4.modulo4 import prepararHabitacion
 from Modulo5.Modulo5 import check_in
 from Modulo5.validacionModulo5 import validar_checkin 
@@ -35,10 +36,11 @@ def menu():
                 print("2. Confirmar reserva")
                 print("3. Preparar habitación (Módulo 4)")
                 print("4. Check-in (Módulo 5)")
-                print("5. Salir")
+                print("5. Listar reservas")
+                print("6. Salir")
                 print("=" * 40)
 
-                opcion = input("Seleccione una opción (1-5): ")
+                opcion = input("Seleccione una opción (1-6): ")
 
                 if opcion == "1":
                     try:
@@ -185,11 +187,13 @@ def menu():
                         print(f"Error al realizar el check-in: {e}")
 
                 elif opcion == "5":
+                    listarReservas()
+                elif opcion == "6":
                     print("Gracias por utilizar el sistema. ¡Hasta luego!")
                     break
 
                 else:
-                    print("Opción inválida. Por favor seleccione entre 1 y 5.")
+                    print("Opción inválida. Por favor seleccione entre 1 y 6.")
 
 
 if __name__ == "__main__":
