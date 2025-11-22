@@ -12,8 +12,10 @@ Determinar qué habitaciones están libres en un rango de fechas `[fecha_check_i
 
 ### Reglas y validaciones
 
-- La habitación debe estar sin reservae en el rango de fechas comprendido entre fecha_check_in y fecha_check_out.
+- La habitación debe estar sin reservas en el rango de fechas comprendido entre fecha_check_in y fecha_check_out.
 - La capacidad de la habitación debe ser igual o mayor a la capacidad ingresada por el usuario.
+- El rangfo de capacidad es de 1 a 4 personas.
+- Una persona no puede hospedarse más de 14 días en el hotel.
 - No mutación de estado: la consulta no crea, bloquea o actualiza reserva ni tareas. 
 
 ### Salidas
@@ -83,13 +85,15 @@ PROCESO ConsultarDisponibilidad(capacidad, fecha_check_in, fecha_check_out)
 		FIN SI
 
 		reservasActivas <- listarReservas (hab.id, estados ∈ {"confirmada","pendiente"})
-// agregar while no solapa 
 		solapa <- FALSO
-		PARA CADA r EN reservasActivas HACER
-			SI (r.fecha_check_out ≥ fecha_check_in y r.fecha_check_in ≤ fechafecha_check_out) ENTONCES
-				solapa <- VERDADERO
-			FIN SI
-		FIN PARA
+		i <- 0
+		MIENTRAS (NO solapa) Y (i < longitud(reservasActivas)) HACER
+	    	r <- reservasActivas[i]
+			SI (r.fecha_check_out >= fecha_check_in) Y (r.fecha_check_in <= fecha_check_out) ENTONCES
+	        	solapa <- VERDADERO
+	    	FIN SI
+	    	i <- i + 1
+		FIN MIENTRAS
 		SI NO solapa ENTONCES
 			(agregar(disponibles, hab)
 		FIN SI
